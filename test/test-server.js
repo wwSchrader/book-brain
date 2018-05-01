@@ -26,3 +26,25 @@ describe('Books', function() {
       });
   });
 });
+
+describe('Users', function() {
+  it(
+    'should register user using local passport' +
+    'strategy on /api/users/register PUT',
+    function(done) {
+      chai.request(server)
+        .put('/api/users/register')
+        .end(function(err, res) {
+          should.not.exist(err);
+          should.exist(res);
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.have.property('registrationStatus');
+          res.body.registrationStatus.should.be.a('string');
+          res.body.registrationStatus.should.equal('success');
+          done();
+        });
+    }
+  );
+});
