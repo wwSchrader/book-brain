@@ -30,19 +30,20 @@ describe('Books', function() {
 describe('Users', function() {
   it(
     'should register user using local passport' +
-    'strategy on /api/users/register PUT',
+    'strategy on /api/users/register/local PUT',
     function(done) {
       chai.request(server)
-        .put('/api/users/register')
+        .put('/api/users/register/local')
+        .send({username: 'johndoe@gmail.com', password: 'password123'})
         .end(function(err, res) {
           should.not.exist(err);
           should.exist(res);
           res.should.have.status(200);
           res.should.be.json;
           res.body.should.be.a('object');
-          res.body.should.have.property('registrationStatus');
-          res.body.registrationStatus.should.be.a('string');
-          res.body.registrationStatus.should.equal('success');
+          res.body.should.have.property('REGISTERED');
+          res.body.REGISTERED.should.be.a('string');
+          res.body.REGISTERED.should.equal('COMPLETE');
           done();
         });
     }
