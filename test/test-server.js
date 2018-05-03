@@ -137,6 +137,9 @@ describe('Users', function() {
           res.body.should.have.property('isLoggedIn');
           res.body.isLoggedIn.should.be.a('boolean');
           res.body.isLoggedIn.should.equal(false);
+          res.body.should.have.property('authError');
+          res.body.authError.should.be.a('string');
+          res.body.authError.should.equal('Incorrect password');
           done();
         });
     }
@@ -161,6 +164,9 @@ describe('Users', function() {
           res.body.should.have.property('isLoggedIn');
           res.body.isLoggedIn.should.be.a('boolean');
           res.body.isLoggedIn.should.equal(false);
+          res.body.should.have.property('authError');
+          res.body.authError.should.be.a('string');
+          res.body.authError.should.equal('Incorrect username');
           done();
         });
     }
