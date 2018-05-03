@@ -4,6 +4,7 @@ const User = require('../models/users');
 const saltRounds = 10;
 const sanitize = require('express-mongo-sanitize');
 const bcrypt = require('bcrypt');
+const passportComponent = require('../component-passport');
 
 // Register user using local strategy
 router.put('/register/local', function(req, res, next) {
@@ -32,5 +33,22 @@ router.put('/register/local', function(req, res, next) {
     }
   });
 });
+
+// Login user using local strategy
+router.post('/login/local',
+  passportComponent.passport
+    .authenticate('local', {failWithError: true, flashFailure: true}),
+  (req, res) => {
+    // handle successful authentication
+    return res.json({isLoggedIn: true});
+  },
+  (err, req, res, next) => {
+    // handle failed authentication
+    return res.status(401).json({
+      isLoggedIn: false,
+      authError: req.flash('authMessage')[0],
+    });
+  }
+);
 
 module.exports = router;

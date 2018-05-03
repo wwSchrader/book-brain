@@ -3,6 +3,8 @@ const chaiHttp = require('chai-http');
 const server = require('../app');
 const should = chai.should();
 const User = require('../models/users');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 chai.use(chaiHttp);
 
@@ -30,28 +32,40 @@ describe('Books', function() {
 
 describe('Users', function() {
   before(function(done) {
-    User.collection.drop();
-    done();
-  });
-
-  beforeEach(function(done) {
-    let newUser = new User({
-      username: 'existingUser@gmail.com',
-      authentication: {
-        local: {
-          email: 'existingUser@gmail.com',
-          password: 'asimplepassword123',
-        },
-      },
-    });
-    newUser.save(function(err) {
+    User.collection.drop(function(err) {
+      // ignore error if collection doesnt exist
+      if (err.code !== 26) {
+        console.log('Drop collection error: ' + err);
+      }
       done();
     });
   });
 
+
+  beforeEach(function(done) {
+    bcrypt.hash('asimplepassword123', saltRounds).then((hash) => {
+      let newUser = new User({
+        username: 'existingUser@gmail.com',
+        authentication: {
+          local: {
+            email: 'existingUser@gmail.com',
+            password: hash,
+          },
+        },
+      });
+      newUser.save(function(err) {
+        done();
+      });
+    });
+  });
+
   afterEach(function(done) {
-    User.collection.drop();
-    done();
+    User.collection.drop(function(err) {
+      if (err) {
+        console.log('Error dropping collection: ' + err);
+      }
+      done();
+    });
   });
 
   it(
@@ -79,7 +93,7 @@ describe('Users', function() {
       'strategy on /api/users/login/local GET',
       function(done) {
         chai.request(server)
-          .get('api/users/login/local')
+          .post('/api/users/login/local')
           .set('content-type', 'application/x-www-form-urlencoded')
           .send({
             username: 'existingUser@gmail.com',
@@ -103,7 +117,7 @@ describe('Users', function() {
     'strategy on /api/users/login/local GET',
     function(done) {
       chai.request(server)
-        .get('api/users/login/local')
+        .post('/api/users/login/local')
         .set('content-type', 'application/x-www-form-urlencoded')
         .send({
           username: 'existingUser@gmail.com',
@@ -112,12 +126,12 @@ describe('Users', function() {
         .end(function(err, res) {
           should.not.exist(err);
           should.exist(res);
-          res.should.have.status(200);
+          res.should.have.status(401);
           res.should.be.json;
           res.body.should.be.a('object');
           res.body.should.have.property('isLoggedIn');
-          res.body.isLoggedIn.should.be.a('false');
-          res.body.isLoggedIn.should.equal(true);
+          res.body.isLoggedIn.should.be.a('boolean');
+          res.body.isLoggedIn.should.equal(false);
           done();
         });
     }
@@ -125,25 +139,25 @@ describe('Users', function() {
 
   it('should reject login based on wrong username using local passport ' +
   'strategy on /api/users/login/local GET',
-  function(done) {
-    chai.request(server)
-      .get('api/users/login/local')
-      .set('content-type', 'application/x-www-form-urlencoded')
-      .send({
-        username: 'wrongusername@gmail.com',
-        password: 'wrongpassword',
-      })
-      .end(function(err, res) {
-        should.not.exist(err);
-        should.exist(res);
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.should.be.a('object');
-        res.body.should.have.property('isLoggedIn');
-        res.body.isLoggedIn.should.be.a('false');
-        res.body.isLoggedIn.should.equal(true);
-        done();
-      });
-  }
+    function(done) {
+      chai.request(server)
+        .post('/api/users/login/local')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({
+          username: 'wrongusername@gmail.com',
+          password: 'wrongpassword',
+        })
+        .end(function(err, res) {
+          should.not.exist(err);
+          should.exist(res);
+          res.should.have.status(401);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.have.property('isLoggedIn');
+          res.body.isLoggedIn.should.be.a('boolean');
+          res.body.isLoggedIn.should.equal(false);
+          done();
+        });
+    }
   );
 });

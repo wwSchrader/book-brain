@@ -4,8 +4,20 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const User = require('./models/users');
 const mongoComponent = require('./component-mongo');
+const bcrypt = require('bcrypt');
+const flash = require('connect-flash');
 
 function setupPassport(app) {
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    name: 'sessionId',
+    store: new MongoStore({mongooseConnection: mongoComponent.db}),
+  }));
+
+  app.use(flash());
+
   passport.serializeUser((user, done) => {
     done(null, user._id);
   });
@@ -28,14 +40,6 @@ function setupPassport(app) {
     next();
   });
 
-  app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    name: 'sessionId',
-    store: new MongoStore({mongooseConnection: mongoComponent.db}),
-  }));
-
   // Local Strategy
   passport.use(new LocalStrategy(
     {passReqToCallback: true},
@@ -51,7 +55,7 @@ function setupPassport(app) {
             req.flash('authMessage', 'Incorrect username')
           );
         }
-        bcrypt.compare(passord, user.password)
+        bcrypt.compare(password, user.authentication.local.password)
           .then((passwordMatch) => {
             if (!passwordMatch) {
               return done(null,
@@ -67,4 +71,4 @@ function setupPassport(app) {
   ));
 }
 
-module.exports = setupPassport;
+module.exports = {setupPassport, passport};
