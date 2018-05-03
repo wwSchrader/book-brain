@@ -31,31 +31,36 @@ describe('Books', function() {
 });
 
 describe('Users', function() {
+  let newUser = '';
+
   before(function(done) {
     User.collection.drop(function(err) {
       // ignore error if collection doesnt exist
       if (err.code !== 26) {
         console.log('Drop collection error: ' + err);
       }
-      done();
+      bcrypt.hash('asimplepassword123', saltRounds).then((hash) => {
+        newUser = {
+          username: 'existingUser@gmail.com',
+          authentication: {
+            local: {
+              email: 'existingUser@gmail.com',
+              password: hash,
+            },
+          },
+        };
+        done();
+      });
     });
   });
 
-
   beforeEach(function(done) {
-    bcrypt.hash('asimplepassword123', saltRounds).then((hash) => {
-      let newUser = new User({
-        username: 'existingUser@gmail.com',
-        authentication: {
-          local: {
-            email: 'existingUser@gmail.com',
-            password: hash,
-          },
-        },
-      });
-      newUser.save(function(err) {
-        done();
-      });
+    let newDbUser = new User(newUser);
+    newDbUser.save(function(err) {
+      if (err) {
+        console.log('Error saving newUser: ' + err);
+      }
+      done();
     });
   });
 
