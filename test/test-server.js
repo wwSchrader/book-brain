@@ -94,6 +94,27 @@ describe('Users', function() {
     }
   );
 
+  it(
+    'should reject register user because of duplicate using local passport ' +
+    'strategy on /api/users/register/local PUT',
+    function(done) {
+      chai.request(server)
+        .put('/api/users/register/local')
+        .send({username: 'existingUser@gmail.com', password: 'password123'})
+        .end(function(err, res) {
+          should.not.exist(err);
+          should.exist(res);
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.have.property('REGISTERED');
+          res.body.REGISTERED.should.be.a('string');
+          res.body.REGISTERED.should.equal('DUPLICATE');
+          done();
+        });
+    }
+  );
+
   it('should login user using local passport ' +
       'strategy on /api/users/login/local GET',
       function(done) {
