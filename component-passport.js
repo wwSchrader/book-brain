@@ -10,8 +10,8 @@ const flash = require('connect-flash');
 function setupPassport(app) {
   app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     name: 'sessionId',
     store: new MongoStore({mongooseConnection: mongoComponent.db}),
   }));

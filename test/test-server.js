@@ -4,29 +4,95 @@ const server = require('../app');
 const should = chai.should();
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const saltRounds = 1;
 
 chai.use(chaiHttp);
 
 describe('Books', function() {
-  it('should get book from api on /api/books/getbook/<bookName> GET',
-    function(done) {
-      chai.request(server)
-        .get('/api/books/getbook/bible')
-        .end(function(err, res) {
-          should.not.exist(err);
-          should.exist(res);
-          res.should.have.status(200);
-          res.should.be.json;
-          res.body.should.be.a('object');
-          res.body.should.have.property('bookTitle');
-          res.body.bookTitle.should.be.a('string');
-          res.body.should.have.property('bookThumbnailUrl');
-          res.body.bookThumbnailUrl.should.be.a('string');
-          res.body.should.have.property('bookInfoUrl');
-          res.body.bookInfoUrl.should.be.a('string');
-          done();
+  this.timeout(10000); // eslint-disable-line no-invalid-this
+  let newUser = '';
+  let agent = chai.request.agent(server);
+
+  before(function(done) {
+    User.collection.drop(function(err) {
+      // ignore error if collection doesnt exist
+      if (err && err.code !== 26) {
+        console.log('Drop collection error: ' + err);
+      }
+      bcrypt.hash('asimplepassword123', saltRounds).then((hash) => {
+        newUser = {
+          username: 'existingUser@gmail.com',
+          authentication: {
+            local: {
+              email: 'existingUser@gmail.com',
+              password: hash,
+            },
+          },
+        };
+        done();
       });
+    });
+  });
+
+  after(function(done) {
+    agent.close();
+    User.collection.drop(function(err) {
+      done();
+    });
+  });
+
+  describe('when authenticated', function() {
+    before(function(done) {
+      let newDbUser = new User(newUser);
+      newDbUser.save(function(err) {
+        if (err) {
+          console.log('Error saving newUser: ' + err);
+        }
+        done();
+      });
+    });
+    beforeEach(function(done) {
+      agent
+          .post('/api/users/login/local')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({
+            username: 'existingUser@gmail.com',
+            password: 'asimplepassword123',
+          })
+          .end(function(err, res) {
+            should.not.exist(err);
+            should.exist(res);
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('isLoggedIn');
+            res.body.isLoggedIn.should.be.a('boolean');
+            res.body.isLoggedIn.should.equal(true);
+            done();
+          });
+    });
+
+    it('should get book from api on /api/books/getbook/<bookName> GET',
+      function(done) {
+        agent
+          .get('/api/books/getbook/bible')
+          .end(function(err, res) {
+            should.not.exist(err);
+            should.exist(res);
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('array');
+            res.body[0].should.be.a('object');
+            res.body[0].should.have.property('bookTitle');
+            res.body[0].bookTitle.should.be.a('string');
+            res.body[0].should.have.property('bookThumbnailUrl');
+            res.body[0].bookThumbnailUrl.should.be.a('string');
+            res.body[0].should.have.property('bookInfoUrl');
+            res.body[0].bookInfoUrl.should.be.a('string');
+            done();
+          });
+      }
+    );
   });
 });
 

@@ -7,7 +7,6 @@ const passportComponent = require('../component-passport');
 
 // Register user using local strategy
 router.put('/register/local', function(req, res, next) {
-  console.log(req.body.username);
   User.findOne({username: req.body.username}, (err, user) => {
     if (user) {
       res.json({'REGISTERED': 'DUPLICATE'});
