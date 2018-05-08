@@ -79,4 +79,21 @@ router.post('/addbook', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+// DELETE book from database
+router.delete('/deletebook', ensureAuthenticated, function(req, res, next) {
+  Book.findById(req.body.bookId, function(err, book) {
+    if (err || !book || book.bookOwner !== req.user.id) {
+      res.json({bookDeleted: false}).sendStatus(500);
+    } else {
+      book.remove().then(function() {
+        res.json({bookDeleted: true});
+      });
+    }
+  })
+  .catch(function(err) {
+    console.log('Error finding book: ' + err);
+    res.json({bookDeleted: false}).sendStatus(500);
+  });
+});
+
 module.exports = router;
