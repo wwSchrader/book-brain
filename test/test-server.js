@@ -148,6 +148,42 @@ describe('Books', function() {
           });
       }
     );
+
+    it('should delete a book owned by user on /api/books/deletebook',
+      function(done) {
+        User.findOne({username: 'existingUser@gmail.com'})
+        .then(function(user) {
+          let newBook = new Books({
+            bookTitle: 'Book To Be Deleted',
+            bookThumbnailUrl: 'Book Thumbnail Url',
+            bookInfoUrl: 'Book Info Url',
+            bookOwner: user.id,
+          });
+
+          return newBook.save().then(function(book) {
+            return book.id;
+          });
+        })
+        .then(function(bookId) {
+          agent
+          .delete('/api/books/deletebook')
+          .send({bookId: bookId})
+          .then(function(res) {
+            should.exist(res);
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('bookDeleted');
+            res.body.bookDeleted.should.be.a('boolean');
+            res.body.bookDeleted.should.equal(true);
+            done();
+          })
+          .catch(function(err) {
+            console.log('Error saving book: ' + err);
+          });
+        });
+      }
+    );
   });
 });
 
