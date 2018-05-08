@@ -5,6 +5,7 @@ const bookSchema = new Schema({
   bookTitle: String,
   bookThumbnailUrl: String,
   bookInfoUrl: String,
+  bookOwner: String,
 });
 
-module.export = mongoose.model('book', bookSchema);
+module.exports = mongoose.model('book', bookSchema);

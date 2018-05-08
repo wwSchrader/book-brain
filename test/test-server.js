@@ -5,6 +5,8 @@ const should = chai.should();
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
 const saltRounds = 1;
+const BookSearch = require('../models/bookSearch');
+const Books = require('../models/books');
 
 chai.use(chaiHttp);
 
@@ -44,12 +46,38 @@ describe('Books', function() {
   describe('when authenticated', function() {
     before(function(done) {
       let newDbUser = new User(newUser);
-      newDbUser.save(function(err) {
-        if (err) {
-          console.log('Error saving newUser: ' + err);
-        }
-        done();
-      });
+      newDbUser
+        .save()
+        .then(function(user) {
+          let newSearch = new BookSearch({
+            searchUserId: user.id,
+            bookSearchResults: [
+              {
+                bookTitle: 'The Hunt For Red October',
+                bookThumbnailUrl: 'www.huntforredoctober.com',
+                bookInfoUrl: 'www.octoberinfo.com',
+              },
+              {
+                bookTitle: 'Narnia',
+                bookThumbnailUrl: 'www.narnia.com',
+                bookInfoUrl: 'www.narniainfo.com',
+              },
+              {
+                bookTitle: 'Bible',
+                bookThumbnailUrl: 'www.bible.com',
+                bookInfoUrl: 'www.bibleinfo.com',
+              },
+            ],
+          });
+          newSearch.save(function(err) {
+            if (err) {
+              console.log('Error saving a new dummy search to database');
+            }
+            done();
+          });
+        }).catch(function(err) {
+          console.log('Error setting up a dummy search');
+        });
     });
     beforeEach(function(done) {
       agent
@@ -72,6 +100,12 @@ describe('Books', function() {
           });
     });
 
+    after(function(done) {
+      BookSearch.collection.drop();
+      Books.collection.drop();
+      done();
+    });
+
     it('should get book from api on /api/books/getbook/<bookName> GET',
       function(done) {
         agent
@@ -89,6 +123,27 @@ describe('Books', function() {
             res.body[0].bookThumbnailUrl.should.be.a('string');
             res.body[0].should.have.property('bookInfoUrl');
             res.body[0].bookInfoUrl.should.be.a('string');
+            done();
+          });
+      }
+    );
+
+    it(
+      'should add selected book from user search ' +
+      'to database on /api/books/addbook POST',
+      function(done) {
+        agent
+          .post('/api/books/addbook')
+          .send({selectedBookIndex: 1})
+          .end(function(err, res) {
+            should.not.exist(err);
+            should.exist(res);
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('bookIsAdded');
+            res.body.bookIsAdded.should.be.a('boolean');
+            res.body.bookIsAdded.should.equal(true);
             done();
           });
       }
