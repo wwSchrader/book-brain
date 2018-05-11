@@ -465,4 +465,55 @@ describe('Users', function() {
         });
     }
   );
+
+  describe('when logged in', function() {
+    this.timeout(10000); // eslint-disable-line no-invalid-this
+    let agent = chai.request.agent(server);
+
+    before(function(done) {
+      User.collection.drop(function(err) {
+        // ignore error if collection doesnt exist
+        if (err && err.code !== 26) {
+          console.log('Drop collection error: ' + err);
+        }
+        bcrypt.hash('asimplepassword123', saltRounds).then((hash) => {
+          newUser = {
+            username: 'existingUser@gmail.com',
+            authentication: {
+              local: {
+                email: 'existingUser@gmail.com',
+                password: hash,
+              },
+            },
+          };
+          done();
+        });
+      });
+    });
+
+    after(function(done) {
+      agent.close();
+      User.collection.drop(function(err) {
+        done();
+      });
+    });
+
+    it('should log user out at /api/users/logout GET', function(done) {
+      agent
+      .get('/api/users/logout')
+      .then(function(res) {
+        should.exist(res);
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('isLoggedIn');
+        res.body.isLoggedIn.should.be.a('boolean');
+        res.body.isLoggedIn.should.equal(false);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+    });
+  });
 });
