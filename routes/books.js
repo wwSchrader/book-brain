@@ -96,4 +96,15 @@ router.delete('/deletebook', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+// GET books owned by user
+router.get('/getownedbooks', ensureAuthenticated, function(req, res, next) {
+  Book.find({bookOwner: req.user.id}, function(err, books) {
+    if (err || !books) {
+      res.sendStatus(500);
+    } else {
+      res.json({returnedBooks: books});
+    }
+  });
+});
+
 module.exports = router;
