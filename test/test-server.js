@@ -39,7 +39,9 @@ describe('Books', function() {
   after(function(done) {
     agent.close();
     User.collection.drop(function(err) {
-      done();
+      Books.collection.drop(function(err) {
+        done();
+      });
     });
   });
 
