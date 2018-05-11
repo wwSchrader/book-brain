@@ -43,6 +43,61 @@ describe('Books', function() {
     });
   });
 
+  describe('when not authenticated', function() {
+    it('should get all books from the database on /api/books/getallbooks GET',
+      function(done) {
+        Books.create([
+          {
+            bookTitle: '1st book',
+            bookThumbnailUrl: '1st Book Thumbnail Url',
+            bookInfoUrl: '1st Book Info Url',
+            bookOwner: '1st user id',
+          },
+          {
+            bookTitle: '2nd book',
+            bookThumbnailUrl: '2nd Book Thumbnail Url',
+            bookInfoUrl: '2nd Book Info Url',
+            bookOwner: '2nd user id',
+          },
+        ])
+        .then(function(bookArray) {
+          chai.request(server)
+          .get('/api/books/getallbooks')
+          .then(function(res) {
+            should.exist(res);
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('returnedBooks');
+            res.body.returnedBooks.should.be.a('array');
+            res.body.array.should.have.lengthOf(2);
+            let firstBook = res.body.array[0];
+            firstBook.should.be.a('object');
+            firstBook.should.have.property('bookTitle');
+            first.bookTitle.should.be.a('string');
+            firstBook.bookTitle.should.equal('1st book');
+            firstBook.should.have.property('bookThumbnailUrl');
+            firstBook.bookThumbnailUrl.should.be.a('string');
+            firstBook.bookThumbnailUrl.should.equal('1st Book Thumbnail Url');
+            firstBook.should.have.property('bookInfoUrl');
+            firstBook.bookInfoUrl.should.be.a('string');
+            firstBook.bookInfoUrl.should.equal('1st Book Info Url');
+            firstBook.should.have.property('bookOwner');
+            firstBook.bookOwner.should.be.a('string');
+            firstBook.bookOwner.should.equal('1st user id');
+            done();
+          })
+          .catch(function(err) {
+            done(err);
+          });
+        })
+        .catch(function(err) {
+          done(err);
+        });
+      }
+    );
+  });
+
   describe('when authenticated', function() {
     before(function(done) {
       let newDbUser = new User(newUser);
@@ -241,7 +296,7 @@ describe('Books', function() {
         })
         .catch(function(err) {
           console.log('Error Returning owners books.' + err);
-          done(err)
+          done(err);
         });
       }
     );
