@@ -204,7 +204,6 @@ describe('Books', function() {
             },
           ])
           .then(function(books) {
-            console.log("Saved books.")
             return books;
           }).catch(function(err) {
             console.log('Error saving array of books: ' + err);
