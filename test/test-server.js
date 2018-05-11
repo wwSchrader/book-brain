@@ -184,6 +184,69 @@ describe('Books', function() {
         });
       }
     );
+
+    it('should get books owned by user on /api/books/getownedbooks',
+      function(done) {
+        User.findOne({username: 'existingUser@gmail.com'})
+        .then(function(user) {
+          Books.create([
+            {
+              bookTitle: 'Book owned by User',
+              bookThumbnailUrl: 'Owned Book Thumbnail Url',
+              bookInfoUrl: 'Owned Book Info Url',
+              bookOwner: user.id,
+            },
+            {
+              bookTitle: 'Book NOT owned by user',
+              bookThumbnailUrl: 'Other Book Thumbnail Url',
+              bookInfoUrl: 'Other Book Info Url',
+              bookOwner: 'SomeOtherUserIdString1235',
+            },
+          ])
+          .then(function(books) {
+            console.log("Saved books.")
+            return books;
+          }).catch(function(err) {
+            console.log('Error saving array of books: ' + err);
+            done();
+          });
+        })
+        .then(function(bookArray) {
+          console.log('Start book test');
+          agent
+            .get('/api/books/getownedbooks')
+            .then(function(err, res) {
+              should.not.exist(err);
+              should.exist(res);
+              res.should.have.status(200);
+              res.should.be.json;
+              res.should.have.property('body');
+              res.body.should.be.a('object');
+              res.body.should.have.property('returnedBooks');
+              res.body.returnedBooks.should.be.a('array');
+              res.body.returnedBooks.should.have.length.of(1);
+              let bkToTst = res.body.returnedBooks[0];
+              bkToTst.should.be.a('object');
+              bkToTst.should.have.property('bookTitle');
+              bkToTst.bookTitle.should.be.a('string');
+              bkToTst.bookTitle.should.equal('Book owned by User');
+              bkToTst.should.have.property('bookThumbnailUrl');
+              bkToTst.bookThumbnailUrl.should.be.a('string');
+              bkToTst.bookThumbnailUrl.should.equal('Owned Book Thumbnail Url');
+              bkToTst.should.have.property(books[0].bookOwner);
+              done();
+            })
+            .catch(function(err) {
+              console.log('Error in the test getting owner books: ' + err);
+              done();
+            });
+        })
+        .catch(function(err) {
+          console.log('Error Returning owners books.' + err);
+          done();
+        });
+      }
+    );
   });
 });
 
