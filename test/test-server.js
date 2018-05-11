@@ -70,11 +70,11 @@ describe('Books', function() {
             res.body.should.be.a('object');
             res.body.should.have.property('returnedBooks');
             res.body.returnedBooks.should.be.a('array');
-            res.body.array.should.have.lengthOf(2);
-            let firstBook = res.body.array[0];
+            res.body.returnedBooks.should.have.lengthOf(2);
+            let firstBook = res.body.returnedBooks[0];
             firstBook.should.be.a('object');
             firstBook.should.have.property('bookTitle');
-            first.bookTitle.should.be.a('string');
+            firstBook.bookTitle.should.be.a('string');
             firstBook.bookTitle.should.equal('1st book');
             firstBook.should.have.property('bookThumbnailUrl');
             firstBook.bookThumbnailUrl.should.be.a('string');

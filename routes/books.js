@@ -107,4 +107,15 @@ router.get('/getownedbooks', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+// Get all books in database
+router.get('/getallbooks', function(req, res, next) {
+  Book.find({}, function(err, books) {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.json({returnedBooks: books});
+    }
+  });
+});
+
 module.exports = router;
