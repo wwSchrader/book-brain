@@ -477,7 +477,7 @@ describe('Users', function() {
           console.log('Drop collection error: ' + err);
         }
         bcrypt.hash('asimplepassword123', saltRounds).then((hash) => {
-          newUser = {
+          User.create({
             username: 'existingUser@gmail.com',
             authentication: {
               local: {
@@ -485,8 +485,27 @@ describe('Users', function() {
                 password: hash,
               },
             },
-          };
-          done();
+          })
+          .then(function(user) {
+            agent
+            .post('/api/users/login/local')
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .send({
+              username: 'existingUser@gmail.com',
+              password: 'asimplepassword123',
+            })
+            .end(function(err, res) {
+              should.not.exist(err);
+              should.exist(res);
+              res.should.have.status(200);
+              res.should.be.json;
+              res.body.should.be.a('object');
+              res.body.should.have.property('isLoggedIn');
+              res.body.isLoggedIn.should.be.a('boolean');
+              res.body.isLoggedIn.should.equal(true);
+              done();
+            });
+          });
         });
       });
     });

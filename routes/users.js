@@ -4,6 +4,7 @@ const User = require('../models/users');
 const saltRounds = 10;
 const bcrypt = require('bcrypt');
 const passportComponent = require('../component-passport');
+const {ensureAuthenticated} = require('../library');
 
 // Register user using local strategy
 router.put('/register/local', function(req, res, next) {
@@ -49,5 +50,11 @@ router.post('/login/local',
     });
   }
 );
+
+// Logout user
+router.get('/logout', ensureAuthenticated, function(req, res, next) {
+  req.logout();
+  res.json({isLoggedIn: false});
+});
 
 module.exports = router;
