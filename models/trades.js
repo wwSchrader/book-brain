@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tradeSchema = new Schema({
-  bookId: String,
+  solicitorBookId: String,
   solicitorId: String,
+  bookToTradeId: String,
 });
 
 module.exports = mongoose.model('trade', tradeSchema);
