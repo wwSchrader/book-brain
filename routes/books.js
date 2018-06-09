@@ -16,9 +16,14 @@ router.get('/getbook/:bookTitle',
     .then((resp) => resp.json())
     .then((bookSearchResults) => {
       let searchResults = bookSearchResults.items.map((individualBook) => {
+        let thumbnail = '';
+
+        if (individualBook.volumeInfo.imageLinks !== undefined) {
+          thumbnail = individualBook.volumeInfo.imageLinks.thumbnail;
+        }
         return {
           bookTitle: individualBook.volumeInfo.title,
-          bookThumbnailUrl: individualBook.volumeInfo.imageLinks.thumbnail,
+          bookThumbnailUrl: thumbnail,
           bookInfoUrl: individualBook.volumeInfo.infoLink,
         };
       });
