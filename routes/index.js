@@ -8,5 +8,6 @@ router.get('/', function(req, res, next) {
 
 router.use('/api/books', require('./books.js'));
 router.use('/api/users', require('./users.js'));
+router.use('/api/trades', require('./trades.js'));
 
 module.exports = router;
