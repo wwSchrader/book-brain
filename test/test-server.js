@@ -607,7 +607,6 @@ describe('Trades', function() {
         });
       })
       .then((userArray) => {
-        console.log(userArray);
         agent
           .post('/api/users/login/local')
           .set('content-type', 'application/x-www-form-urlencoded')
