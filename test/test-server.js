@@ -538,3 +538,128 @@ describe('Users', function() {
     });
   });
 });
+
+describe('Trades', function() {
+  let agent = chai.request.agent(server);
+  let bookIds = [];
+
+  before(function(done) {
+    bcrypt.hash('traderpassword', saltRounds)
+    .then((hash) => {
+      return [{
+        username: 'traderUser@gmail.com',
+        authentication: {
+          local: {
+            email: 'traderUser@gmail.com',
+            password: hash,
+          },
+        },
+      }];
+    })
+    .then((userArray) => {
+      bcrypt.hash('anotherUserPassword', saltRounds)
+      .then((hash) => {
+        userArray.push({
+          username: 'anotherUser@gmail.com',
+          authentication: {
+            local: {
+              email: 'anotherUser@gmail.com',
+              password: hash,
+            },
+          },
+        });
+        return userArray;
+      })
+      .then((userArray) => {
+        // once users are created in db, return userArray to next then function
+        return User.create(userArray)
+          .then((users) => {
+            // save the ids to user array
+            userArray[0].id = users[0].id;
+            userArray[1].id = users[1].id;
+            return userArray;
+            })
+          .catch((err) => {
+            done('Error in saving user array' + err);
+          });
+      })
+      .then((userArray) => {
+        return Books.create([
+          {
+            bookTitle: 'Trader\'s Book',
+            bookThumbnailUrl: 'traderbook.url',
+            bookInfoUrl: 'Some trader book info',
+            bookOwner: userArray[0].id,
+          },
+          {
+            bookTitle: 'Another users book',
+            bookThumbnailUrl: 'another users book url',
+            bookInfoUrl: 'Some other users book info',
+            bookOwner: userArray[1].id,
+          },
+        ])
+        .then((bookArray) => {
+          bookIds = bookArray.map((book) => book.id);
+          return userArray;
+        })
+        .catch((err) => {
+          done('Error in Saving book array: ' + err);
+        });
+      })
+      .then((userArray) => {
+        console.log(userArray);
+        agent
+          .post('/api/users/login/local')
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .send({
+            username: userArray[0].username,
+            password: 'traderpassword',
+          })
+          .end((err, res) => {
+            should.not.exist(err);
+            should.exist(res);
+            res.should.have.status(200);
+            res.should.be.a.json;
+            res.should.have.property('body');
+            res.body.should.be.a('object');
+            res.body.should.have.property('isLoggedIn');
+            res.body.isLoggedIn.should.be.a('boolean');
+            res.body.isLoggedIn.should.equal(true);
+            done();
+          });
+      });
+    });
+  });
+
+  after(function(done) {
+    agent.close();
+    User.collection.drop(function(err) {
+      Books.collection.drop(function(err) {
+        done();
+      });
+    });
+  });
+
+  it('should add a proposed trade at /api/trade/propose PUT', function(done) {
+    agent
+      .post('/api/trades/propose')
+      .send({
+        bookWanted: bookIds[0],
+        bookToGiveUp: bookIds[1],
+      })
+      .then((res) => {
+        should.exist(res);
+        res.should.have.status(200);
+        res.should.be.a.json;
+        res.should.have.property('body');
+        res.body.should.be.a('object');
+        res.body.should.have.property('tradePosted');
+        res.body.tradePosted.should.be.a('boolean');
+        res.body.tradePosted.should.equal(true);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
