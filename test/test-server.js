@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 1;
 const BookSearch = require('../models/bookSearch');
 const Books = require('../models/books');
+const Trades = require('../models/trades');
 
 chai.use(chaiHttp);
 
@@ -634,7 +635,9 @@ describe('Trades', function() {
     agent.close();
     User.collection.drop(function(err) {
       Books.collection.drop(function(err) {
-        done();
+        Trades.collection.drop(function(err) {
+          done();
+        });
       });
     });
   });
@@ -662,10 +665,10 @@ describe('Trades', function() {
       });
   });
 
-  it('should get proposed trades at /api/trade/getProposed GET',
+  it('should get proposed trades at /api/trades/getProposed GET',
     function(done) {
       agent
-        .get('/api/trades/get')
+        .get('/api/trades/getProposed')
         .then((res) => {
           should.exist(res);
           res.should.have.status(200);
@@ -673,11 +676,11 @@ describe('Trades', function() {
           res.should.have.property('body');
           res.body.should.be.a('object');
           res.body.should.have.property('listOfTrades');
-          res.body.should.be.an('array');
+          res.body.listOfTrades.should.be.an('array');
           res.body.listOfTrades.should.have.length(1);
           res.body.listOfTrades[0].should.be.an('object');
-          res.body.listOfTrades[0].should.have.property('solicitoryBookId');
-          res.body.listOfTrades[0].solicitoryBookId.should.be.a('string');
+          res.body.listOfTrades[0].should.have.property('solicitorBookId');
+          res.body.listOfTrades[0].solicitorBookId.should.be.a('string');
           res.body.listOfTrades[0].should.have.property('bookToTradeId');
           res.body.listOfTrades[0].bookToTradeId.should.be.a('string');
           done();

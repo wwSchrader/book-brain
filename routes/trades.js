@@ -34,4 +34,24 @@ router.post('/propose', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+// GET proposed trades from database
+router.get('/getProposed', ensureAuthenticated, function(req, res, next) {
+  Trade.find({solicitorId: req.userId}, function(err, tradeResults) {
+    if (err) {
+      console.log('Error in finding trades' + err);
+      res.status(500);
+    } else if (!tradeResults) {
+      res.json({listOfTrades: []});
+    } else {
+      let tradesToBeReturned = tradeResults.map((trade) => {
+        return {
+          solicitorBookId: trade.solicitorBookId,
+          bookToTradeId: trade.bookToTradeId,
+        };
+      });
+      res.json({listOfTrades: tradesToBeReturned});
+    }
+  });
+});
+
 module.exports= router;
