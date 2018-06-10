@@ -661,4 +661,30 @@ describe('Trades', function() {
         done(err);
       });
   });
+
+  it('should get proposed trades at /api/trade/getProposed GET',
+    function(done) {
+      agent
+        .get('/api/trades/get')
+        .then((res) => {
+          should.exist(res);
+          res.should.have.status(200);
+          res.should.be.a.json;
+          res.should.have.property('body');
+          res.body.should.be.a('object');
+          res.body.should.have.property('listOfTrades');
+          res.body.should.be.an('array');
+          res.body.listOfTrades.should.have.length(1);
+          res.body.listOfTrades[0].should.be.an('object');
+          res.body.listOfTrades[0].should.have.property('solicitoryBookId');
+          res.body.listOfTrades[0].solicitoryBookId.should.be.a('string');
+          res.body.listOfTrades[0].should.have.property('bookToTradeId');
+          res.body.listOfTrades[0].bookToTradeId.should.be.a('string');
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+    }
+  );
 });
