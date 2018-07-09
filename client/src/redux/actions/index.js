@@ -2,6 +2,7 @@ const USER_IS_LOGGED_IN = 'USER_IS_LOGGED_IN';
 const USER_IS_LOADING = 'USER_IS_LOADING';
 const USERNAME_FETCH_SUCCESSFUL = 'USERNAME_FETCH_SUCCESSFUL';
 const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED';
+const LOGIN_MODAL_IS_OPEN = 'LOGIN_MODAL_IS_OPEN';
 
 export function isLoggedIn(bool) {
   return {
@@ -28,5 +29,12 @@ export function usernameFetchSuccessful(items) {
   return {
     type: USERNAME_FETCH_SUCCESSFUL,
     username: items,
+  };
+}
+
+export function loginModalIsOpen(bool) {
+  return {
+    type: LOGIN_MODAL_IS_OPEN,
+    loginModal: bool,
   };
 }

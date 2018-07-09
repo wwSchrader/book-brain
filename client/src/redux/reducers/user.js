@@ -33,3 +33,12 @@ export function userNameFetch(state = null, action) {
       return state;
   }
 }
+
+export function loginModalIsOpen(state = false, action) {
+  switch (action.type) {
+    case 'LOGIN_MODAL_IS_OPEN':
+      return action.loginModal;
+    default:
+      return state;
+  }
+}
