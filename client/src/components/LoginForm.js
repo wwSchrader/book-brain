@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
-import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
+import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
-      passwprd: '',
+      password: '',
+      submitButtonPressed: false,
     };
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.validateField = this.validateField.bind(this);
+    this.handleLoginButtonPress = this.handleLoginButtonPress.bind(this);
   }
 
   handleUsernameChange(e) {
@@ -18,13 +21,32 @@ class LoginForm extends Component {
   }
 
   handlePasswordChange(e) {
-    this.setState({passowrd: e.target.value});
+    this.setState({password: e.target.value});
+  }
+
+  validateField(field) {
+    if (this.state.submitButtonPressed) {
+      if (this.state[field].length < 1) {
+        return 'error';
+      } else {
+        return 'success';
+      }
+    } else {
+      return null;
+    }
+  }
+
+  handleLoginButtonPress(e) {
+    this.setState({submitButtonPressed: true});
   }
 
   render() {
     return (
       <form>
-        <FormGroup controlId='usernameField'>
+        <FormGroup
+            controlId='usernameField'
+            validationState={this.validateField('username')}
+        >
           <ControlLabel>Username:</ControlLabel>
           <FormControl
               type='text'
@@ -34,7 +56,10 @@ class LoginForm extends Component {
           />
           <FormControl.Feedback />
         </FormGroup>
-        <FormGroup controlId='passwordField'>
+        <FormGroup
+            controlId='passwordField'
+            validationState={this.validateField('password')}
+        >
           <ControlLabel>Password:</ControlLabel>
           <FormControl
               type='password'
@@ -44,6 +69,7 @@ class LoginForm extends Component {
           />
           <FormControl.Feedback />
         </FormGroup>
+        <Button onClick={this.handleLoginButtonPress}>Login</Button>
       </form>
     );
   }
