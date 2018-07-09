@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {loginModalIsOpen} from '../redux/actions/index';
+import LoginForm from './LoginForm';
 
 class LoginModal extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class LoginModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <h3>Please sign in</h3>
+          <LoginForm />
         </Modal.Body>
       </Modal>
     );
