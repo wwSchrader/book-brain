@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, Button} from 'react-bootstrap';
+import {Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {loginModalIsOpen} from '../redux/actions/index';
 import LoginForm from './LoginForm';
