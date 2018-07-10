@@ -15,7 +15,8 @@ class RegistrationForm extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleRegistrationButtonPress = this.handleRegistrationButtonPress.bind(this);
+    this.handleSubmit =
+      this.handleSubmit.bind(this);
   }
 
   validateField(field) {
@@ -42,13 +43,15 @@ class RegistrationForm extends Component {
     this.setState({password: e.target.value});
   }
 
-  handleRegistrationButtonPress(e) {
+  handleSubmit(e) {
+    console.log("On submit");
+    e.preventDefault();
     this.setState({registrationButtonPressed: true});
   }
 
   render() {
     return (
-      <form autoComplete='on'>
+      <form autoComplete='on' onSubmit={this.handleSubmit}>
         <FormGroup
             controlId='emailField'
             validationState={this.validateField('email')}
@@ -91,7 +94,9 @@ class RegistrationForm extends Component {
           />
           <FormControl.Feedback />
         </FormGroup>
-        <Button onClick={this.handleRegistrationButtonPress}>Register</Button>
+        <Button type='submit' >
+          Register
+        </Button>
       </form>
     );
   }
