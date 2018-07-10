@@ -12,6 +12,10 @@ class RegistrationForm extends Component {
     };
 
     this.validateField = this.validateField.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleRegistrationButtonPress = this.handleRegistrationButtonPress.bind(this);
   }
 
   validateField(field) {
@@ -32,6 +36,10 @@ class RegistrationForm extends Component {
 
   handleUsernameChange(e) {
     this.setState({username: e.target.value});
+  }
+
+  handlePasswordChange(e) {
+    this.setState({password: e.target.value});
   }
 
   handleRegistrationButtonPress(e) {
