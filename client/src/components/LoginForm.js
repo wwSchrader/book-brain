@@ -42,7 +42,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <form>
+      <form autoComplete='on'>
         <FormGroup
             controlId='usernameField'
             validationState={this.validateField('username')}
@@ -53,6 +53,7 @@ class LoginForm extends Component {
               value={this.state.username}
               placeholder='Enter Username'
               onChange={this.handleUsernameChange}
+              autoComplete='username'
           />
           <FormControl.Feedback />
         </FormGroup>
@@ -66,6 +67,7 @@ class LoginForm extends Component {
               value={this.state.password}
               placeholder='Enter password'
               onChange={this.handlePasswordChange}
+              autoComplete='current-password'
           />
           <FormControl.Feedback />
         </FormGroup>
