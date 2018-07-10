@@ -1,18 +1,49 @@
 import React, {Component} from 'react';
-import {Modal} from 'react-bootstrap';
+import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {loginModalIsOpen} from '../redux/actions/index';
 import LoginForm from './LoginForm';
+import RegistrationForm from './RegistrationForm';
 
 class LoginModal extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      registrationMode: false,
+    };
 
     this.onHideLoginModal = this.onHideLoginModal.bind(this);
+    this.switchRegistrationMode = this.switchRegistrationMode.bind(this);
+    this.displayLoginOrRegistrationForm =
+      this.displayLoginOrRegistrationForm.bind(this);
   }
 
   onHideLoginModal() {
     this.props.loginModalIsOpen(false);
+  }
+
+  switchRegistrationMode() {
+    this.setState({registrationMode: !this.state.registrationMode});
+  }
+
+  displayLoginOrRegistrationForm() {
+    if (this.state.registrationMode) {
+      return (
+        <div>
+          <RegistrationForm />
+          <h4>New to this site?</h4>
+          <Button onClick={this.switchRegistrationMode}>Login</Button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <LoginForm />
+          <h4>Already have an account?</h4>
+          <Button onClick={this.switchRegistrationMode}>Register</Button>
+        </div>
+      );
+    }
   }
 
   render() {
@@ -23,7 +54,7 @@ class LoginModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <h3>Please sign in</h3>
-          <LoginForm />
+          {this.displayLoginOrRegistrationForm()}
         </Modal.Body>
       </Modal>
     );
