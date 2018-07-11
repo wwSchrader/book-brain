@@ -38,3 +38,33 @@ export function loginModalIsOpen(bool) {
     loginModal: bool,
   };
 }
+
+export function registerUserApiCall(user) {
+  return (dispatch) => {
+    // show loading screen while calling registration api
+    dispatch(userIsLoading(true));
+
+    fetch('/api/users/register/local', {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(user),
+      headers: {'Content-Type': 'application/json'},
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        console.log('Registration');
+        console.log(res);
+        if (res.REGISTERED === 'COMPLETE') {
+          // if registered, close modal, set as logged in
+          // and cancel loading state
+          dispatch(userIsLoading(false));
+          dispatch(isLoggedIn(true));
+          dispatch(loginModalIsOpen(false));
+        }
+      })
+      .catch((err) => {
+        dispatch(userIsLoading(false));
+        console.log('Error registering user: ' + err);
+      });
+  };
+}

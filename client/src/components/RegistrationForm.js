@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {registerUserApiCall} from '../redux/actions/index';
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -44,9 +46,15 @@ class RegistrationForm extends Component {
   }
 
   handleSubmit(e) {
-    console.log("On submit");
     e.preventDefault();
     this.setState({registrationButtonPressed: true});
+    if (this.state.username.length > 0 && this.state.password.length > 0 && this.state.email.length > 0) {
+      this.props.registerUserApiCall({
+        username: this.state.username,
+        password: this.state.password,
+        email: this.state.email,
+      });
+    }
   }
 
   render() {
@@ -102,4 +110,10 @@ class RegistrationForm extends Component {
   }
 }
 
-export default RegistrationForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    registerUserApiCall: (bool) => dispatch(registerUserApiCall(bool)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(RegistrationForm);
