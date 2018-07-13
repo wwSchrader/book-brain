@@ -43,6 +43,7 @@ export function registerUserApiCall(user) {
   return (dispatch) => {
     // show loading screen while calling registration api
     dispatch(userIsLoading(true));
+    console.log(user);
 
     fetch('/api/users/register/local', {
       method: 'PUT',
@@ -66,5 +67,32 @@ export function registerUserApiCall(user) {
         dispatch(userIsLoading(false));
         console.log('Error registering user: ' + err);
       });
+  };
+}
+
+export function loginUserApiCall(user) {
+  return (dispatch) => {
+    // show loading while calling login api
+    dispatch(userIsLoading(true));
+
+    fetch('/api/users/login/local', {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(user),
+      headers: {'Content-Type': 'application/json'},
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      console.log(res);
+      if (res.isLoggedIn) {
+        dispatch(userIsLoading(false));
+        dispatch(isLoggedIn(true));
+        dispatch(loginModalIsOpen(false));
+      }
+    })
+    .catch((err) => {
+      dispatch(userIsLoading(false));
+      console.log('Error logging in user: ' + err);
+    });
   };
 }

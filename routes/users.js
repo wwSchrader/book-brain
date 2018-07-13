@@ -8,15 +8,18 @@ const {ensureAuthenticated} = require('../library');
 
 // Register user using local strategy
 router.put('/register/local', function(req, res, next) {
+  console.log(req.body);
+  console.log("Register path");
   User.findOne({username: req.body.username}, (err, user) => {
     if (user) {
       res.json({'REGISTERED': 'DUPLICATE'});
     } else {
       bcrypt.hash(req.body.password, saltRounds).then((hash) => {
         let newUser = new User({
+          username: req.body.username,
           authentication: {
             local: {
-              email: req.body.username,
+              email: req.body.email,
               password: hash,
             },
           },

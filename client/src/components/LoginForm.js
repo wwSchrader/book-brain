@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {loginUserApiCall} from '../redux/actions/index';
+import {connect} from 'react-redux';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -38,6 +40,15 @@ class LoginForm extends Component {
 
   handleLoginButtonPress(e) {
     this.setState({submitButtonPressed: true});
+    console.log("Username: " + this.state.username.length);
+    console.log("Password: " + this.state.password);
+    if (this.state.username.length > 0 && this.state.password.length > 0) {
+      console.log("Login button pressed");
+      this.props.loginUserApiCall({
+        username: this.state.username,
+        password: this.state.password,
+      });
+    }
   }
 
   render() {
@@ -77,4 +88,10 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUserApiCall: (user) => dispatch(loginUserApiCall(user)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(LoginForm);
