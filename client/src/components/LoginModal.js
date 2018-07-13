@@ -31,7 +31,7 @@ class LoginModal extends Component {
       return (
         <div>
           <RegistrationForm />
-          <h4>New to this site?</h4>
+          <h4>Already have an account?</h4>
           <Button onClick={this.switchRegistrationMode}>Login</Button>
         </div>
       );
@@ -39,7 +39,7 @@ class LoginModal extends Component {
       return (
         <div>
           <LoginForm />
-          <h4>Already have an account?</h4>
+          <h4>New to this site?</h4>
           <Button onClick={this.switchRegistrationMode}>Register</Button>
         </div>
       );
@@ -53,7 +53,6 @@ class LoginModal extends Component {
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h3>Please sign in</h3>
           {this.displayLoginOrRegistrationForm()}
         </Modal.Body>
       </Modal>
