@@ -25,6 +25,15 @@ export function userLoginFailed(state = false, action) {
   }
 }
 
+export function userLoginMessageFailure(state = '', action) {
+  switch (action.type) {
+    case 'USER_LOGIN_FAILURE_MESSAGE':
+      return action.userLoginFailureMessage;
+    default:
+      return state;
+  }
+}
+
 export function userNameFetch(state = null, action) {
   switch (action.type) {
     case 'USERNAME_FETCH_SUCCESSFUL':

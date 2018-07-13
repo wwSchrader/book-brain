@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {FormGroup, FormControl, ControlLabel, Button, Alert} from 'react-bootstrap';
 import {loginUserApiCall} from '../redux/actions/index';
 import {connect} from 'react-redux';
 
@@ -16,6 +16,7 @@ class LoginForm extends Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.validateField = this.validateField.bind(this);
     this.handleLoginButtonPress = this.handleLoginButtonPress.bind(this);
+    this.displayErrorMessageIfLoginFailed = this.displayErrorMessageIfLoginFailed.bind(this);
   }
 
   handleUsernameChange(e) {
@@ -51,9 +52,22 @@ class LoginForm extends Component {
     }
   }
 
+  displayErrorMessageIfLoginFailed() {
+    if (this.props.userLoginFailed) {
+      return (
+        <Alert bsStyle='danger'>
+          {this.props.userLoginMessageFailure}
+        </Alert>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     return (
       <form autoComplete='on'>
+        {this.displayErrorMessageIfLoginFailed()}
         <FormGroup
             controlId='usernameField'
             validationState={this.validateField('username')}
@@ -88,10 +102,17 @@ class LoginForm extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    userLoginMessageFailure: state.userLoginMessageFailure,
+    userLoginFailed: state.userLoginFailed,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     loginUserApiCall: (user) => dispatch(loginUserApiCall(user)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

@@ -5,6 +5,7 @@ import {
   userLoginFailed,
   userNameFetch,
   loginModalIsOpen,
+  userLoginMessageFailure,
 } from './user.js';
 
 const bookBrainApp = combineReducers({
@@ -13,6 +14,7 @@ const bookBrainApp = combineReducers({
   userLoginFailed,
   userNameFetch,
   loginModalIsOpen,
+  userLoginMessageFailure,
 });
 
 export default bookBrainApp;
