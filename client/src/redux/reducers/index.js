@@ -7,6 +7,9 @@ import {
   loginModalIsOpen,
   userLoginMessageFailure,
 } from './user.js';
+import {
+  addBookModalIsOpen,
+} from './book.js';
 
 const bookBrainApp = combineReducers({
   userIsLoggedIn,
@@ -15,6 +18,7 @@ const bookBrainApp = combineReducers({
   userNameFetch,
   loginModalIsOpen,
   userLoginMessageFailure,
+  addBookModalIsOpen,
 });
 
 export default bookBrainApp;

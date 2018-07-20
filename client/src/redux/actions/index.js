@@ -4,6 +4,7 @@ const USERNAME_FETCH_SUCCESSFUL = 'USERNAME_FETCH_SUCCESSFUL';
 const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED';
 const LOGIN_MODAL_IS_OPEN = 'LOGIN_MODAL_IS_OPEN';
 const USER_LOGIN_FAILURE_MESSAGE = 'USER_LOGIN_FAILURE_MESSAGE';
+const ADD_BOOK_MODAL_IS_OPEN = 'ADD_BOOK_MODAL_IS_OPEN';
 
 export function isLoggedIn(bool) {
   return {
@@ -106,5 +107,12 @@ export function loginUserApiCall(user) {
       dispatch(userIsLoading(false));
       console.log('Error logging in user: ' + err);
     });
+  };
+}
+
+export function addBookModalIsOpen(bool) {
+  return {
+    type: ADD_BOOK_MODAL_IS_OPEN,
+    addBookModalIsOpen: bool,
   };
 }
