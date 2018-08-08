@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {addBookModalIsOpen} from '../redux/actions/index';
+import AddBookSearchBar from './AddBookSearchBar';
 
 class AddBookModal extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class AddBookModal extends Component {
           <Modal.Title>Add A Book</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h3>Test Add Book Modal</h3>
+          <AddBookSearchBar/>
         </Modal.Body>
       </Modal>
     );
