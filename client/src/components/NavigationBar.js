@@ -1,17 +1,34 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {loginModalIsOpen} from '../redux/actions/index';
+import {loginModalIsOpen, logoutUserApiCall} from '../redux/actions/index';
 
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
 
     this.onShowLoginModal = this.onShowLoginModal.bind(this);
+    this.showLoginOrLogout = this.showLoginOrLogout.bind(this);
   }
 
   onShowLoginModal() {
     this.props.loginModalIsOpen(true);
+  }
+
+  showLoginOrLogout() {
+    if (this.props.isLoggedIn) {
+      return (
+        <NavItem eventKey={1} onClick={this.props.logoutUserApiCall}>
+          Logout
+        </NavItem>
+      );
+    } else {
+      return (
+        <NavItem eventKey={1} onClick={this.onShowLoginModal}>
+          Login
+        </NavItem>
+      );
+    }
   }
 
   render() {
@@ -23,19 +40,24 @@ class NavigationBar extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav pullRight>
-          <NavItem eventKey={1} onClick={this.onShowLoginModal}>
-            Login
-          </NavItem>
+          {this.showLoginOrLogout()}
         </Nav>
       </Navbar>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    loginModalIsOpen: (bool) => dispatch(loginModalIsOpen(bool)),
+    isLoggedIn: state.userIsLoggedIn,
   };
 };
 
-export default connect(null, mapDispatchToProps)(NavigationBar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginModalIsOpen: (bool) => dispatch(loginModalIsOpen(bool)),
+    logoutUserApiCall: (bool) => dispatch(logoutUserApiCall(bool)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);

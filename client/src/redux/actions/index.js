@@ -110,6 +110,24 @@ export function loginUserApiCall(user) {
   };
 }
 
+export function logoutUserApiCall() {
+  return (dispatch) => {
+    fetch('api/users/logout', {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      if (!res.isLoggedIn) {
+        dispatch(isLoggedIn(false));
+      }
+    })
+   .catch((err) => {
+      console.log('Error with logging out: ' + err);
+    });
+  };
+}
+
 export function addBookModalIsOpen(bool) {
   return {
     type: ADD_BOOK_MODAL_IS_OPEN,
