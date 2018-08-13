@@ -9,6 +9,7 @@ class NavigationBar extends Component {
 
     this.onShowLoginModal = this.onShowLoginModal.bind(this);
     this.showLoginOrLogout = this.showLoginOrLogout.bind(this);
+    this.showUserNavigationButtons = this.showUserNavigationButtons.bind(this);
   }
 
   onShowLoginModal() {
@@ -31,6 +32,14 @@ class NavigationBar extends Component {
     }
   }
 
+  showUserNavigationButtons() {
+    if (this.props.isLoggedIn) {
+      return (
+        <NavItem>My Books</NavItem>
+      );
+    }
+  }
+
   render() {
     return (
       <Navbar>
@@ -39,6 +48,9 @@ class NavigationBar extends Component {
             Book Brain
           </Navbar.Brand>
         </Navbar.Header>
+        <Nav>
+          {this.showUserNavigationButtons()}
+        </Nav>
         <Nav pullRight>
           {this.showLoginOrLogout()}
         </Nav>
