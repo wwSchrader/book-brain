@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import './App.css';
 import NavigationBar from './NavigationBar';
 import LoginModal from './LoginModal';
-
 import MyBooks from './MyBooks';
-import {Route, withRouter} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import Home from './Home';
 
 class App extends Component {
