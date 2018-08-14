@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {loginModalIsOpen, logoutUserApiCall} from '../redux/actions/index';
+import {LinkContainer} from 'react-router-bootstrap';
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -35,7 +36,10 @@ class NavigationBar extends Component {
   showUserNavigationButtons() {
     if (this.props.isLoggedIn) {
       return (
-        <NavItem>My Books</NavItem>
+          <LinkContainer to='/mybooks'>
+            <NavItem eventKey={'mybooks'}>My Books</NavItem>
+          </LinkContainer>
+
       );
     }
   }
@@ -43,11 +47,13 @@ class NavigationBar extends Component {
   render() {
     return (
       <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            Book Brain
-          </Navbar.Brand>
-        </Navbar.Header>
+        <LinkContainer to='/'>
+          <Navbar.Header>
+            <Navbar.Brand>
+              Book Brain
+            </Navbar.Brand>
+          </Navbar.Header>
+        </LinkContainer>
         <Nav>
           {this.showUserNavigationButtons()}
         </Nav>

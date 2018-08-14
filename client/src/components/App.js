@@ -6,6 +6,9 @@ import LoginModal from './LoginModal';
 import {connect} from 'react-redux';
 import {addBookModalIsOpen} from '../redux/actions/index';
 import AddBookModal from './AddBookModal';
+import MyBooks from './MyBooks';
+import {Route, withRouter} from 'react-router-dom';
+import Home from './Home';
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +34,8 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <button onClick={this.handleAddBookClick}>Add a Book</button>
+        <Route exact path='/' component={Home} />
+        <Route path='/mybooks' component={MyBooks} />
       </div>
     );
   }
@@ -42,4 +47,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default withRouter(connect(null, mapDispatchToProps)(App));
