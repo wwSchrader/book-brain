@@ -3,6 +3,7 @@ import {Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {addBookModalIsOpen} from '../redux/actions/index';
 import AddBookSearchBar from './AddBookSearchBar';
+import AddBookSearchResultsList from './AddBookSearchResultsList';
 
 class AddBookModal extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class AddBookModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <AddBookSearchBar/>
+          <AddBookSearchResultsList/>
         </Modal.Body>
       </Modal>
     );
