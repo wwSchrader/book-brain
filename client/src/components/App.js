@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import logo from '../logo.svg';
 import './App.css';
 import NavigationBar from './NavigationBar';
 import LoginModal from './LoginModal';
@@ -26,13 +25,6 @@ class App extends Component {
         <NavigationBar/>
         <LoginModal/>
         <AddBookModal/>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
         <button onClick={this.handleAddBookClick}>Add a Book</button>
         <Route exact path='/' component={Home} />
         <Route path='/mybooks' component={MyBooks} />
