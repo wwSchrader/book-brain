@@ -5,6 +5,7 @@ const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED';
 const LOGIN_MODAL_IS_OPEN = 'LOGIN_MODAL_IS_OPEN';
 const USER_LOGIN_FAILURE_MESSAGE = 'USER_LOGIN_FAILURE_MESSAGE';
 const ADD_BOOK_MODAL_IS_OPEN = 'ADD_BOOK_MODAL_IS_OPEN';
+const BOOK_SEARCH_ARRAY = 'BOOK_SEARCH_ARRAY';
 
 export function isLoggedIn(bool) {
   return {
@@ -132,5 +133,28 @@ export function addBookModalIsOpen(bool) {
   return {
     type: ADD_BOOK_MODAL_IS_OPEN,
     addBookModalIsOpen: bool,
+  };
+}
+
+export function bookSearchArray(bookArray) {
+  return {
+    type: BOOK_SEARCH_ARRAY,
+    bookSearchArray: bookArray,
+  };
+}
+
+export function getBookSearchArray(bookSearchTerm) {
+  return (dispatch) => {
+    fetch('api/books/getbook/' + bookSearchTerm, {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      dispatch(bookSearchArray(res));
+    })
+    .catch((err) => {
+      console.log('Error with getting Book Search Array' + err);
+    });
   };
 }

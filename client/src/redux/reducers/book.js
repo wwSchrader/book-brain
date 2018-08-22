@@ -6,3 +6,12 @@ export function addBookModalIsOpen(state = false, action) {
       return state;
   }
 }
+
+export function bookSearchArray(state = [], action) {
+  switch (action.type) {
+    case 'BOOK_SEARCH_ARRAY':
+      return action.bookSearchArray;
+    default:
+      return state;
+  }
+}

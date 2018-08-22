@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {FormGroup, FormControl, Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {getBookSearchArray} from '../redux/actions/index';
 
 class AddBookSearchBar extends Component {
   constructor(props) {
@@ -20,7 +22,7 @@ class AddBookSearchBar extends Component {
     e.preventDefault();
     if (this.state.searchBar.length > 0) {
       // send search query to server
-      console.log('Search Submitted!');
+      this.props.getBookSearchArray(this.state.searchBar);
     }
   }
 
@@ -40,4 +42,11 @@ class AddBookSearchBar extends Component {
   }
 }
 
-export default AddBookSearchBar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBookSearchArray:
+      (bookSearchTerm) => dispatch(getBookSearchArray(bookSearchTerm)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddBookSearchBar);

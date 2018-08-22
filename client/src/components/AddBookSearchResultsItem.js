@@ -24,7 +24,10 @@ class AddBookSearchResultItem extends Component {
     return (
       <div>
         <h5>{this.state.bookTitle}</h5>
-        <p>{this.state.bookImage}</p>
+        <img
+            src={this.state.bookImage}
+            alt={'Picture of ' + this.state.bookTitle}
+        />
         <p>{this.state.bookIndex}</p>
       </div>
     );
