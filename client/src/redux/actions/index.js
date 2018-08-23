@@ -158,3 +158,25 @@ export function getBookSearchArray(bookSearchTerm) {
     });
   };
 }
+
+export function addBookToUserCollection(bookSearchIndex) {
+  return (dispatch) => {
+    fetch('api/books/addbook', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body:
+          JSON.stringify({selectedBookIndex: bookSearchIndex}),
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      if (res.bookIsAdded) {
+        // close modal if book is added
+        dispatch(addBookModalIsOpen(false));
+      }
+    })
+    .catch((err) => {
+      console.log('Error adding book: ' + err);
+    });
+  };
+}

@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {addBookToUserCollection} from '../redux/actions/index';
 
 class AddBookSearchResultItem extends Component {
   constructor(props) {
@@ -8,6 +10,8 @@ class AddBookSearchResultItem extends Component {
       bookImage: props.bookImage,
       bookIndex: props.bookIndex,
     };
+
+    this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -20,6 +24,10 @@ class AddBookSearchResultItem extends Component {
     }
   }
 
+  handleAddButtonClick() {
+    this.props.addBookToUserCollection(this.props.bookIndex);
+  }
+
   render() {
     return (
       <div>
@@ -28,10 +36,17 @@ class AddBookSearchResultItem extends Component {
             src={this.state.bookImage}
             alt={'Picture of ' + this.state.bookTitle}
         />
-        <p>{this.state.bookIndex}</p>
+        <button onClick={this.handleAddButtonClick}>Add</button>
       </div>
     );
   }
 }
 
-export default AddBookSearchResultItem;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addBookToUserCollection:
+      (index) => dispatch(addBookToUserCollection(index)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddBookSearchResultItem);
