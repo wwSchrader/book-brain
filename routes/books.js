@@ -28,19 +28,24 @@ router.get('/getbook/:bookTitle',
         };
       });
 
-      let newBookSearch = new BookSearch({
+      let newBookSearch = {
         searchUserId: req.userId,
         bookSearchResults: searchResults,
-      });
+      };
 
-      newBookSearch.save((err) => {
-        if (err) {
-          console.log('Error saving search results: ' + err);
-          res.sendStatus(500);
-        } else {
-          res.json(searchResults);
+      BookSearch.findOneAndUpdate(
+        {searchUserId: req.userId},
+        newBookSearch,
+        {upsert: true},
+        (err) => {
+          if (err) {
+            console.log('Error saving search results: ' + err);
+            res.sendStatus(500);
+          } else {
+            res.json(searchResults);
+          }
         }
-      });
+      );
     })
     .catch((error) => {
       console.log('Error calling Google Book Api' + error);
