@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {deleteAUserBook} from '../redux/actions/index';
 
 class BookList extends Component {
   constructor(props) {
@@ -14,19 +15,19 @@ class BookList extends Component {
     win.focus();
   }
 
-  decideToRenderAButton() {
+  decideToRenderAButton(bookId) {
     // if logged in, return a button
     if (this.props.isLoggedIn) {
-      return this.decideToRenderDeleteOrTradeButton();
+      return this.decideToRenderDeleteOrTradeButton(bookId);
     } else {
       return null;
     }
   }
 
-  decideToRenderDeleteOrTradeButton() {
+  decideToRenderDeleteOrTradeButton(bookId) {
     // if in MyBooks Component, return delete button
     if (this.props.parentComponent === 'MyBooks') {
-      return <button>Delete</button>;
+      return <button onClick={() => this.props.deleteAUserBook(bookId)}>Delete</button>;
     } else if (this.props.parentComponent === 'Home') {
       // return trade button if in Home Component
       return <button>Trade</button>;
@@ -52,7 +53,7 @@ class BookList extends Component {
                 <button
                     onClick={() => this.handleInfoButtonClick(book.bookInfoUrl)}
                 >Book Info</button>
-                {this.decideToRenderAButton()}
+                {this.decideToRenderAButton(book._id)}
               </div>
             );
           })}
@@ -68,4 +69,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(BookList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteAUserBook: (bookId) => dispatch(deleteAUserBook(bookId)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);

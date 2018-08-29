@@ -225,3 +225,24 @@ export function getAllUserBookArray() {
     });
   };
 }
+
+export function deleteAUserBook(bookId) {
+  return (dispatch) => {
+    fetch('api/books/deletebook', {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body:
+          JSON.stringify({bookId: bookId}),
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      if (res.bookDeleted) {
+        dispatch(getUserBookArray());
+      }
+    })
+    .catch((err) => {
+      console.log('Error deleting book ' + err);
+    });
+  };
+}

@@ -95,7 +95,7 @@ router.post('/addbook', ensureAuthenticated, function(req, res, next) {
 // DELETE book from database
 router.delete('/deletebook', ensureAuthenticated, function(req, res, next) {
   Book.findById(req.body.bookId, function(err, book) {
-    if (err || !book || book.bookOwner !== req.user._id) {
+    if (err || !book || book.bookOwner !== req.user._id.toString()) {
       res.json({bookDeleted: false}).sendStatus(500);
     } else {
       book.remove().then(function() {
