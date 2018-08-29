@@ -24,3 +24,12 @@ export function userBookArray(state = [], action) {
       return state;
   }
 }
+
+export function allUsersBookArray(state = [], action) {
+  switch (action.type) {
+    case 'ALL_USERS_BOOK_ARRAY':
+      return action.allUsersBookArray;
+  default:
+    return state;
+  }
+}

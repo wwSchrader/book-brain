@@ -7,6 +7,7 @@ const USER_LOGIN_FAILURE_MESSAGE = 'USER_LOGIN_FAILURE_MESSAGE';
 const ADD_BOOK_MODAL_IS_OPEN = 'ADD_BOOK_MODAL_IS_OPEN';
 const BOOK_SEARCH_ARRAY = 'BOOK_SEARCH_ARRAY';
 const USER_BOOK_ARRAY = 'USER_BOOK_ARRAY';
+const ALL_USERS_BOOK_ARRAY = 'ALL_USERS_BOOK_ARRAY';
 
 export function isLoggedIn(bool) {
   return {
@@ -201,6 +202,26 @@ export function getUserBookArray() {
     })
     .catch((err) => {
       console.log('Error getting user books: ' + err);
+    });
+  };
+}
+
+export function allUsersBookArray(bookArray) {
+  return {
+    type: ALL_USERS_BOOK_ARRAY,
+    allUsersBookArray: bookArray,
+  };
+}
+
+export function getAllUserBookArray() {
+  return (dispatch) => {
+    fetch('api/books/getallbooks', {method: 'GET'})
+    .then((resp) => resp.json())
+    .then((res) => {
+      dispatch(allUsersBookArray(res.returnedBooks));
+    })
+    .catch((err) => {
+      console.log('Error getting all users books ' + err);
     });
   };
 }

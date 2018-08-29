@@ -11,6 +11,7 @@ import {
   addBookModalIsOpen,
   bookSearchArray,
   userBookArray,
+  allUsersBookArray,
 } from './book.js';
 
 const bookBrainApp = combineReducers({
@@ -23,6 +24,7 @@ const bookBrainApp = combineReducers({
   addBookModalIsOpen,
   bookSearchArray,
   userBookArray,
+  allUsersBookArray,
 });
 
 export default bookBrainApp;

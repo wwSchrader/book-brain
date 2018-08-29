@@ -1,11 +1,33 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getAllUserBookArray} from '../redux/actions/index';
+import BookList from './BookList';
 
 class Home extends Component {
+  componentDidMount() {
+    this.props.getAllUsersBooksArray();
+  }
+
   render() {
     return (
-      <h3>Home Screen</h3>
+      <div>
+        <h3>Home Screen</h3>
+        <BookList bookArray={this.props.bookArray} />
+      </div>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    bookArray: state.allUsersBookArray,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllUsersBooksArray: () => dispatch(getAllUserBookArray()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
