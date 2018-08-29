@@ -12,7 +12,7 @@ class Home extends Component {
     return (
       <div>
         <h3>Home Screen</h3>
-        <BookList bookArray={this.props.bookArray} />
+        <BookList bookArray={this.props.bookArray} parentComponent={'Home'} />
       </div>
     );
   }

@@ -1,9 +1,38 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 class BookList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.decideToRenderAButton = this.decideToRenderAButton.bind(this);
+    this.decideToRenderDeleteOrTradeButton =
+      this.decideToRenderDeleteOrTradeButton.bind(this);
+  }
   handleInfoButtonClick(bookInfoUrl) {
     let win = window.open(bookInfoUrl, '_blank');
     win.focus();
+  }
+
+  decideToRenderAButton() {
+    // if logged in, return a button
+    if (this.props.isLoggedIn) {
+      return this.decideToRenderDeleteOrTradeButton();
+    } else {
+      return null;
+    }
+  }
+
+  decideToRenderDeleteOrTradeButton() {
+    // if in MyBooks Component, return delete button
+    if (this.props.parentComponent === 'MyBooks') {
+      return <button>Delete</button>;
+    } else if (this.props.parentComponent === 'Home') {
+      // return trade button if in Home Component
+      return <button>Trade</button>;
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -23,6 +52,7 @@ class BookList extends Component {
                 <button
                     onClick={() => this.handleInfoButtonClick(book.bookInfoUrl)}
                 >Book Info</button>
+                {this.decideToRenderAButton()}
               </div>
             );
           })}
@@ -32,4 +62,10 @@ class BookList extends Component {
   }
 }
 
-export default BookList;
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.userIsLoggedIn,
+  };
+};
+
+export default connect(mapStateToProps, null)(BookList);

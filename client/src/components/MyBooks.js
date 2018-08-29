@@ -26,7 +26,7 @@ class MyBooks extends Component {
           <h3>My Books Screen</h3>
           <button onClick={this.handleAddBookClick}>Add a Book</button>
           <AddBookModal/>
-          <BookList bookArray={this.props.bookArray} />
+          <BookList bookArray={this.props.bookArray} parentComponent={'MyBooks'} />
         </div>
       );
     } else {
