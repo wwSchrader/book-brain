@@ -15,3 +15,12 @@ export function bookSearchArray(state = [], action) {
       return state;
   }
 }
+
+export function userBookArray(state = [], action) {
+  switch (action.type) {
+    case 'USER_BOOK_ARRAY':
+      return action.userBookArray;
+    default:
+      return state;
+  }
+}

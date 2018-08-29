@@ -29,12 +29,12 @@ router.get('/getbook/:bookTitle',
       });
 
       let newBookSearch = {
-        searchUserId: req.userId,
+        searchUserId: req.user._id,
         bookSearchResults: searchResults,
       };
 
       BookSearch.findOneAndUpdate(
-        {searchUserId: req.userId},
+        {searchUserId: req.user._id},
         newBookSearch,
         {upsert: true},
         (err) => {
@@ -56,43 +56,46 @@ router.get('/getbook/:bookTitle',
 
 // POST book from search result to database and remove bookSearch object
 router.post('/addbook', ensureAuthenticated, function(req, res, next) {
-  BookSearch.findOne({userId: req.userId}, function(err, bookSearchResults) {
-    if (err || !bookSearchResults) {
-      console.log('Error finding search results: ' + err);
-      res.sendStatus(500);
-    } else {
-      let selectedBookResult =
-        bookSearchResults.bookSearchResults[req.body.selectedBookIndex];
-      let newBook = new Book({
-        bookOwner: req.userId,
-        bookTitle: selectedBookResult.bookTitle,
-        bookThumbnailUrl: selectedBookResult.bookThumbnailUrl,
-        bookInfoUrl: selectedBookResult.bookInfoUrl,
-      });
+  BookSearch.findOne(
+    {searchUserId: req.user._id},
+    function(err, bookSearchResults) {
+      if (err || !bookSearchResults) {
+        console.log('Error finding search results: ' + err);
+        res.sendStatus(500);
+      } else {
+        let selectedBookResult =
+          bookSearchResults.bookSearchResults[req.body.selectedBookIndex];
+        let newBook = new Book({
+          bookOwner: req.user._id,
+          bookTitle: selectedBookResult.bookTitle,
+          bookThumbnailUrl: selectedBookResult.bookThumbnailUrl,
+          bookInfoUrl: selectedBookResult.bookInfoUrl,
+        });
 
-      newBook.save()
-      .then(function(newBook) {
-        bookSearchResults.remove()
-        .then(function(bookSearchResults) {
-          res.json({bookIsAdded: true});
+        newBook.save()
+        .then(function(newBook) {
+          bookSearchResults.remove()
+          .then(function(bookSearchResults) {
+            res.json({bookIsAdded: true});
+          })
+          .catch(function(err) {
+            console.log('Error deleting bookSearch Results: ' + err);
+            res.json({bookIsAdded: true}).sendStatus(500);
+          });
         })
         .catch(function(err) {
-          console.log('Error deleting bookSearch Results: ' + err);
+          console.log('Error saving book object to db: ' + err);
           res.json({bookIsAdded: true}).sendStatus(500);
         });
-      })
-      .catch(function(err) {
-        console.log('Error saving book object to db: ' + err);
-        res.json({bookIsAdded: true}).sendStatus(500);
-      });
+      }
     }
-  });
+  );
 });
 
 // DELETE book from database
 router.delete('/deletebook', ensureAuthenticated, function(req, res, next) {
   Book.findById(req.body.bookId, function(err, book) {
-    if (err || !book || book.bookOwner !== req.user.id) {
+    if (err || !book || book.bookOwner !== req.user._id) {
       res.json({bookDeleted: false}).sendStatus(500);
     } else {
       book.remove().then(function() {
@@ -108,7 +111,7 @@ router.delete('/deletebook', ensureAuthenticated, function(req, res, next) {
 
 // GET books owned by user
 router.get('/getownedbooks', ensureAuthenticated, function(req, res, next) {
-  Book.find({bookOwner: req.user.id}, function(err, books) {
+  Book.find({bookOwner: req.user._id}, function(err, books) {
     if (err || !books) {
       res.sendStatus(500);
     } else {

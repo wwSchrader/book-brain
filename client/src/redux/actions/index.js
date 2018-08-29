@@ -6,6 +6,7 @@ const LOGIN_MODAL_IS_OPEN = 'LOGIN_MODAL_IS_OPEN';
 const USER_LOGIN_FAILURE_MESSAGE = 'USER_LOGIN_FAILURE_MESSAGE';
 const ADD_BOOK_MODAL_IS_OPEN = 'ADD_BOOK_MODAL_IS_OPEN';
 const BOOK_SEARCH_ARRAY = 'BOOK_SEARCH_ARRAY';
+const USER_BOOK_ARRAY = 'USER_BOOK_ARRAY';
 
 export function isLoggedIn(bool) {
   return {
@@ -177,6 +178,29 @@ export function addBookToUserCollection(bookSearchIndex) {
     })
     .catch((err) => {
       console.log('Error adding book: ' + err);
+    });
+  };
+}
+
+export function userBookArray(bookArray) {
+  return {
+    type: USER_BOOK_ARRAY,
+    userBookArray: bookArray,
+  };
+}
+
+export function getUserBookArray() {
+  return (dispatch) => {
+    fetch('api/books/getownedbooks', {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      dispatch(userBookArray(res.returnedBooks));
+    })
+    .catch((err) => {
+      console.log('Error getting user books: ' + err);
     });
   };
 }
