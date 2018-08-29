@@ -37,7 +37,7 @@ class BookList extends Component {
   }
 
   render() {
-    if (!this.props.bookArray) {
+    if (this.props.bookArray.length === 0) {
       return <h3>No Books!</h3>;
     } else {
       return (
