@@ -36,10 +36,14 @@ class NavigationBar extends Component {
   showUserNavigationButtons() {
     if (this.props.isLoggedIn) {
       return (
+        <Nav>
           <LinkContainer to='/mybooks'>
             <NavItem eventKey={'mybooks'}>My Books</NavItem>
           </LinkContainer>
-
+          <LinkContainer to='/trades'>
+            <NavItem eventKey={'trades'}>Trades</NavItem>
+          </LinkContainer>
+        </Nav>
       );
     }
   }
@@ -54,9 +58,7 @@ class NavigationBar extends Component {
             </Navbar.Brand>
           </Navbar.Header>
         </LinkContainer>
-        <Nav>
-          {this.showUserNavigationButtons()}
-        </Nav>
+        {this.showUserNavigationButtons()}
         <Nav pullRight>
           {this.showLoginOrLogout()}
         </Nav>
