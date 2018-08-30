@@ -5,6 +5,7 @@ import LoginModal from './LoginModal';
 import MyBooks from './MyBooks';
 import {Route} from 'react-router-dom';
 import Home from './Home';
+import Trades from './Trades';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
         <LoginModal/>
         <Route exact path='/' component={Home} />
         <Route path='/mybooks' component={MyBooks} />
+        <Route path='/trades' component={Trades} />
       </div>
     );
   }
