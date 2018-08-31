@@ -125,6 +125,7 @@ export function logoutUserApiCall() {
     .then((res) => {
       if (!res.isLoggedIn) {
         dispatch(isLoggedIn(false));
+        dispatch(setUserInfo(null));
       }
     })
    .catch((err) => {
