@@ -9,30 +9,46 @@ class BookList extends Component {
     this.decideToRenderAButton = this.decideToRenderAButton.bind(this);
     this.decideToRenderDeleteOrTradeButton =
       this.decideToRenderDeleteOrTradeButton.bind(this);
+    this.decideToRenderDeleteButtonOrOwnedMsg =
+      this.decideToRenderDeleteButtonOrOwnedMsg.bind(this);
   }
   handleInfoButtonClick(bookInfoUrl) {
     let win = window.open(bookInfoUrl, '_blank');
     win.focus();
   }
 
-  decideToRenderAButton(bookId) {
+  decideToRenderAButton(bookId, bookOwner) {
     // if logged in, return a button
     if (this.props.isLoggedIn) {
-      return this.decideToRenderDeleteOrTradeButton(bookId);
+      return this.decideToRenderDeleteOrTradeButton(bookId, bookOwner);
     } else {
       return null;
     }
   }
 
-  decideToRenderDeleteOrTradeButton(bookId) {
+  decideToRenderDeleteOrTradeButton(bookId, bookOwner) {
     // if in MyBooks Component, return delete button
     if (this.props.parentComponent === 'MyBooks') {
-      return <button onClick={() => this.props.deleteAUserBook(bookId)}>Delete</button>;
+      return (
+        <button
+            onClick={() => this.props.deleteAUserBook(bookId)}
+        >
+        Delete
+        </button>
+      );
     } else if (this.props.parentComponent === 'Home') {
       // return trade button if in Home Component
-      return <button>Trade</button>;
+      return this.decideToRenderDeleteButtonOrOwnedMsg(bookId, bookOwner);
     } else {
       return null;
+    }
+  }
+
+  decideToRenderDeleteButtonOrOwnedMsg(bookId, bookOwner) {
+    if (bookOwner === this.props.userId) {
+      return <h5>Owned</h5>;
+    } else {
+      return <button>Trade</button>;
     }
   }
 
@@ -53,7 +69,7 @@ class BookList extends Component {
                 <button
                     onClick={() => this.handleInfoButtonClick(book.bookInfoUrl)}
                 >Book Info</button>
-                {this.decideToRenderAButton(book._id)}
+                {this.decideToRenderAButton(book._id, book.bookOwner)}
               </div>
             );
           })}
@@ -66,6 +82,7 @@ class BookList extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.userIsLoggedIn,
+    userId: state.userInfo.userId,
   };
 };
 

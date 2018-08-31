@@ -101,6 +101,7 @@ export function loginUserApiCall(user) {
         dispatch(isLoggedIn(true));
         dispatch(userLoginFailed(false));
         dispatch(loginModalIsOpen(false));
+        dispatch(setUserInfo(res.userId));
       } else if (!res.isLoggedIn) {
         dispatch(userIsLoading(false));
         dispatch(userLoginFailed(true));
@@ -253,7 +254,7 @@ export function setUserInfo(userId) {
   return {
     type: USER_INFO,
     userInfo: {
-      userid: userId,
+      userId: userId,
     },
   };
 }
