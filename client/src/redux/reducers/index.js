@@ -6,6 +6,7 @@ import {
   userNameFetch,
   loginModalIsOpen,
   userLoginMessageFailure,
+  userInfo,
 } from './user.js';
 import {
   addBookModalIsOpen,
@@ -25,6 +26,7 @@ const bookBrainApp = combineReducers({
   bookSearchArray,
   userBookArray,
   allUsersBookArray,
+  userInfo,
 });
 
 export default bookBrainApp;

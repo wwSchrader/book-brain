@@ -51,3 +51,13 @@ export function loginModalIsOpen(state = false, action) {
       return state;
   }
 }
+
+// stores the user id
+export function userInfo(state = {}, action) {
+  switch (action.type) {
+    case 'USER_INFO':
+      return action.userInfo;
+    default:
+      return state;
+  }
+}

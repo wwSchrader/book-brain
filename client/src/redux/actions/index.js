@@ -8,6 +8,7 @@ const ADD_BOOK_MODAL_IS_OPEN = 'ADD_BOOK_MODAL_IS_OPEN';
 const BOOK_SEARCH_ARRAY = 'BOOK_SEARCH_ARRAY';
 const USER_BOOK_ARRAY = 'USER_BOOK_ARRAY';
 const ALL_USERS_BOOK_ARRAY = 'ALL_USERS_BOOK_ARRAY';
+const USER_INFO = 'USER_INFO';
 
 export function isLoggedIn(bool) {
   return {
@@ -244,5 +245,15 @@ export function deleteAUserBook(bookId) {
     .catch((err) => {
       console.log('Error deleting book ' + err);
     });
+  };
+}
+
+// save user id
+export function setUserInfo(userId) {
+  return {
+    type: USER_INFO,
+    userInfo: {
+      userid: userId,
+    },
   };
 }
