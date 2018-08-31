@@ -43,7 +43,7 @@ router.post('/login/local',
     .authenticate('local', {failWithError: true, flashFailure: true}),
   (req, res) => {
     // handle successful authentication
-    return res.json({isLoggedIn: true});
+    return res.json({isLoggedIn: true, userId: req.user._id});
   },
   (err, req, res, next) => {
     // handle failed authentication
