@@ -9,6 +9,7 @@ const BOOK_SEARCH_ARRAY = 'BOOK_SEARCH_ARRAY';
 const USER_BOOK_ARRAY = 'USER_BOOK_ARRAY';
 const ALL_USERS_BOOK_ARRAY = 'ALL_USERS_BOOK_ARRAY';
 const USER_INFO = 'USER_INFO';
+const REQUESTED_TRADE_LIST = 'REQUESTED_TRADE_LIST';
 
 export function isLoggedIn(bool) {
   return {
@@ -257,5 +258,12 @@ export function setUserInfo(userId) {
     userInfo: {
       userId: userId,
     },
+  };
+}
+
+export function setRequestedTradeList(requestedTradeArray) {
+  return {
+    type: REQUESTED_TRADE_LIST,
+    requestedTradeList: requestedTradeArray,
   };
 }
