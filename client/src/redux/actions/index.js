@@ -267,3 +267,17 @@ export function setRequestedTradeList(requestedTradeArray) {
     requestedTradeList: requestedTradeArray,
   };
 }
+
+export function proposeTrade(bookIdWanted, bookIdToGiveUp) {
+  return (dispatch) => {
+    fetch('api/trades/propose', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          bookWanted: bookIdWanted,
+          bookToGiveUp: bookIdToGiveUp,
+      }),
+    });
+  };
+}
