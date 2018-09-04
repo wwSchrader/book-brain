@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha --timeout 10000",
-    "autotest": "supervisor -q -n exit -x mocha -- -b"
+    "autotest": "supervisor -q -n exit -x mocha -- -b",
+    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "dependencies": {
     "bcrypt": "^2.0.1",
