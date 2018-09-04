@@ -1,17 +1,26 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {deleteAUserBook} from '../redux/actions/index';
+import SelectBookToGiveUpModal from './SelectBookToGiveUpModal';
 
 class BookList extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      showSelectBookToGiveUpModal: false,
+      bookIdWanted: null,
+    };
 
     this.decideToRenderAButton = this.decideToRenderAButton.bind(this);
     this.decideToRenderDeleteOrTradeButton =
       this.decideToRenderDeleteOrTradeButton.bind(this);
     this.decideToRenderDeleteButtonOrOwnedMsg =
       this.decideToRenderDeleteButtonOrOwnedMsg.bind(this);
+    this.handleTradeButtonClick = this.handleTradeButtonClick.bind(this);
+    this.onHideBookToGiveUpModal = this.onHideBookToGiveUpModal.bind(this);
   }
+
   handleInfoButtonClick(bookInfoUrl) {
     let win = window.open(bookInfoUrl, '_blank');
     win.focus();
@@ -48,8 +57,26 @@ class BookList extends Component {
     if (bookOwner === this.props.userId) {
       return <h5>Owned</h5>;
     } else {
-      return <button>Trade</button>;
+      return (
+        <button onClick={() => this.handleTradeButtonClick(bookId)}>
+          Trade
+        </button>
+      );
     }
+  }
+
+  handleTradeButtonClick(bookId) {
+    this.setState({
+      showSelectBookToGiveUpModal: true,
+      bookIdWanted: bookId,
+    });
+  }
+
+  onHideBookToGiveUpModal() {
+    this.setState({
+      showSelectBookToGiveUpModal: false,
+      bookIdWanted: null,
+    });
   }
 
   render() {
@@ -58,6 +85,11 @@ class BookList extends Component {
     } else {
       return (
         <div>
+          <SelectBookToGiveUpModal
+              showModal={this.state.showSelectBookToGiveUpModal}
+              bookIdWanted={this.state.bookIdWanted}
+              onHide={this.onHideBookToGiveUpModal}
+          />
           {this.props.bookArray.map((book) => {
             return (
               <div key={book.bookOwner + book.bookInfoUrl}>
