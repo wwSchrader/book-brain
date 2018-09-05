@@ -278,6 +278,17 @@ export function proposeTrade(bookIdWanted, bookIdToGiveUp) {
           bookWanted: bookIdWanted,
           bookToGiveUp: bookIdToGiveUp,
       }),
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      if (res.tradePosted) {
+        console.log('Trade posted successfully!');
+      } else {
+        console.log('Error in posting trade');
+      }
+    })
+    .catch((err) => {
+      console.log('Error proposing trade ' + err);
     });
   };
 }

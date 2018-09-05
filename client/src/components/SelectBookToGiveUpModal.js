@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import {Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {getUserBookArray} from '../redux/actions/index';
+import {getUserBookArray, proposeTrade} from '../redux/actions/index';
 
 class SelectBookToGiveUpModal extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSelectButton = this.handleSelectButton.bind(this);
+  }
   componentDidMount() {
     this.props.getUserBookArray();
+  }
+
+  handleSelectButton(bookIdToGiveUp) {
+    this.props.proposeTrade(this.props.bookIdWanted, bookIdToGiveUp);
+    this.props.onHide();
   }
 
   render() {
@@ -23,7 +32,9 @@ class SelectBookToGiveUpModal extends Component {
                     src={book.bookThumbnailUrl}
                     alt={'Book cover of ' + book.bookTitle}
                 />
-                <button>Select</button>
+                <button onClick={() => this.handleSelectButton(book._id)}>
+                  Select
+                </button>
               </div>
             );
           })}
@@ -42,6 +53,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUserBookArray: () => dispatch(getUserBookArray()),
+    proposeTrade: (bookIdWanted, bookIdToGiveUp) =>
+      dispatch(proposeTrade(bookIdWanted, bookIdToGiveUp)),
   };
 };
 

@@ -18,7 +18,7 @@ router.post('/propose', ensureAuthenticated, function(req, res, next) {
         } else {
           Trade.create({
             solicitorBookId: req.body.bookWanted,
-            solicitorId: req.userId,
+            solicitorId: req.user._id,
             bookToTradeId: req.body.bookToGiveUp,
           })
           .then((tradeResult) => {
