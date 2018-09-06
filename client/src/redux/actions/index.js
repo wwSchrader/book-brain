@@ -10,6 +10,7 @@ const USER_BOOK_ARRAY = 'USER_BOOK_ARRAY';
 const ALL_USERS_BOOK_ARRAY = 'ALL_USERS_BOOK_ARRAY';
 const USER_INFO = 'USER_INFO';
 const REQUESTED_TRADE_LIST = 'REQUESTED_TRADE_LIST';
+const PENDING_TRADE_LIST = 'PENDING_TRADE_LIST';
 
 export function isLoggedIn(bool) {
   return {
@@ -265,6 +266,13 @@ export function setRequestedTradeList(requestedTradeArray) {
   return {
     type: REQUESTED_TRADE_LIST,
     requestedTradeList: requestedTradeArray,
+  };
+}
+
+export function setPendingTradeList(pendingTradeArray) {
+  return {
+    type: PENDING_TRADE_LIST,
+    pendingTradeList: pendingTradeArray,
   };
 }
 

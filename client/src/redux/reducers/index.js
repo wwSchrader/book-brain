@@ -14,7 +14,10 @@ import {
   userBookArray,
   allUsersBookArray,
 } from './book.js';
-import {requestedTradeList} from './trade.js';
+import {
+  requestedTradeList,
+  pendingTradeList,
+} from './trade.js';
 
 const bookBrainApp = combineReducers({
   userIsLoggedIn,
@@ -29,6 +32,7 @@ const bookBrainApp = combineReducers({
   allUsersBookArray,
   userInfo,
   requestedTradeList,
+  pendingTradeList,
 });
 
 export default bookBrainApp;

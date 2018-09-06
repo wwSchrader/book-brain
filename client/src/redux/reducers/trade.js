@@ -6,3 +6,12 @@ export function requestedTradeList(state = [], action) {
       return state;
   }
 }
+
+export function pendingTradeList(state = [], action) {
+  switch (action.type) {
+    case 'PENDING_TRADE_LIST':
+      return action.pendingTradeList;
+    default:
+      return state;
+  }
+}
