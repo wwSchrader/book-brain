@@ -67,13 +67,10 @@ async function findTradesLinkedToBooks(bookArray) {
 }
 
 async function getTradesFromDb(bookIdArray, typeOfSearch) {
-  return Trade.find(
-    {[typeOfSearch]: {$in: bookIdArray}},
-    async function(err, trades) {
-      if (err) {
-        console.log(err);
-      } else {
-        let answer = await Promise.all(trades.map(async (trade) => {
+  return (
+    Trade.find({[typeOfSearch]: {$in: bookIdArray}})
+    .then(async (trades) => {
+      let answer = await Promise.all(trades.map(async (trade) => {
           let solicitorBook = await getBookByIdFromDb(trade.solicitorBookId);
           let bookToTrade = await getBookByIdFromDb(trade.bookToTradeId);
           trade.hereIsTheAnswer = solicitorBook;
@@ -84,13 +81,12 @@ async function getTradesFromDb(bookIdArray, typeOfSearch) {
           };
         }));
         return answer;
-      }
-    }
+    })
   );
 }
 
-function getBookByIdFromDb(bookId) {
-  return Book.find({_id: bookId}, function(err, book) {
+async function getBookByIdFromDb(bookId) {
+  return await Book.findOne({_id: bookId}, function(err, book) {
     if (err) {
       console.log('Error in finding book by id: ' + err);
     } else {
@@ -100,7 +96,7 @@ function getBookByIdFromDb(bookId) {
         bookInfoUrl: book.bookInfoUrl,
       };
     }
-  });
+  }).exec();
 }
 
 module.exports= router;

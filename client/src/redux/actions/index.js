@@ -310,7 +310,8 @@ export function getTrades() {
     })
     .then((resp) => resp.json())
     .then((res) => {
-      console.log(res);
+      dispatch(setPendingTradeList(res.pendingTradesArray));
+      dispatch(setRequestedTradeList(res.requestedTradesArray));
     })
     .catch((err) => {
       console.log('Error in getting trades ' + err);
