@@ -300,3 +300,20 @@ export function proposeTrade(bookIdWanted, bookIdToGiveUp) {
     });
   };
 }
+
+export function getTrades() {
+  return (dispatch) => {
+    fetch('api/trades/getProposed', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log('Error in getting trades ' + err);
+    });
+  };
+}

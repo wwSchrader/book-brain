@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getTrades} from '../redux/actions/index';
 
 class Trades extends Component {
+  componentDidMount() {
+    this.props.getTrades();
+  }
+
   render() {
     return (
       <div>
@@ -10,4 +16,10 @@ class Trades extends Component {
   }
 }
 
-export default Trades;
+const mapDispatchToProps =(dispatch) => {
+  return {
+    getTrades: () => dispatch(getTrades()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Trades);

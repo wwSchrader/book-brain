@@ -36,22 +36,71 @@ router.post('/propose', ensureAuthenticated, function(req, res, next) {
 
 // GET proposed trades from database
 router.get('/getProposed', ensureAuthenticated, function(req, res, next) {
-  Trade.find({solicitorId: req.userId}, function(err, tradeResults) {
-    if (err) {
-      console.log('Error in finding trades' + err);
-      res.status(500);
-    } else if (!tradeResults) {
-      res.json({listOfTrades: []});
+  Book.find({bookOwner: req.user._id}, function(err, books) {
+    if (err || !books) {
+      res.sendStatus(500);
     } else {
-      let tradesToBeReturned = tradeResults.map((trade) => {
-        return {
-          solicitorBookId: trade.solicitorBookId,
-          bookToTradeId: trade.bookToTradeId,
-        };
-      });
-      res.json({listOfTrades: tradesToBeReturned});
+      findTradesLinkedToBooks(books)
+        .then((bookArrays) => {
+          res.json(bookArrays);
+        })
+        .catch((err) => {
+          console.log('Error in findTradesLinkedToBooks ' + err);
+        });
     }
   });
 });
+
+async function findTradesLinkedToBooks(bookArray) {
+  let bookIdArray = bookArray.map((book) => {
+    return book.id;
+  });
+
+  let requestedTradesArray =
+    await getTradesFromDb(bookIdArray, 'solicitorBookId');
+  let pendingTradesArray = await getTradesFromDb(bookIdArray, 'bookToTradeId');
+
+  return {
+    pendingTradesArray: pendingTradesArray,
+    requestedTradesArray: requestedTradesArray,
+  };
+}
+
+async function getTradesFromDb(bookIdArray, typeOfSearch) {
+  return Trade.find(
+    {[typeOfSearch]: {$in: bookIdArray}},
+    async function(err, trades) {
+      if (err) {
+        console.log(err);
+      } else {
+        let answer = await Promise.all(trades.map(async (trade) => {
+          let solicitorBook = await getBookByIdFromDb(trade.solicitorBookId);
+          let bookToTrade = await getBookByIdFromDb(trade.bookToTradeId);
+          trade.hereIsTheAnswer = solicitorBook;
+          return {
+            _id: trade._id,
+            bookToTrade: bookToTrade,
+            solicitorBook: solicitorBook,
+          };
+        }));
+        return answer;
+      }
+    }
+  );
+}
+
+function getBookByIdFromDb(bookId) {
+  return Book.find({_id: bookId}, function(err, book) {
+    if (err) {
+      console.log('Error in finding book by id: ' + err);
+    } else {
+      return {
+        bookTitle: book.bookTitle,
+        bookThumbnailUrl: book.bookThumbnailUrl,
+        bookInfoUrl: book.bookInfoUrl,
+      };
+    }
+  });
+}
 
 module.exports= router;
