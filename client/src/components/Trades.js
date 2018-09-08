@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getTrades} from '../redux/actions/index';
+import TradeItem from './TradeItem';
 
 class Trades extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Trades extends Component {
       return (
         <div>
           {this.props.pendingTradeList.map((book) => {
-            return <p key={book._id}>{book.bookToTrade.bookTitle}</p>;
+            return <TradeItem book={book} tradeType='pending' />;
           })}
         </div>
       );
@@ -33,7 +34,7 @@ class Trades extends Component {
       return (
         <div>
           {this.props.requestedTradeList.map((book) => {
-            return <p key={book._id}>{book.bookToTrade.bookTitle}</p>;
+            return <TradeItem book={book} tradeType='requested' />;
           })}
         </div>
       );
