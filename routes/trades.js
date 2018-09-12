@@ -51,6 +51,61 @@ router.get('/getProposed', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+router.delete('/deleteTrade', ensureAuthenticated, function(req, res, next) {
+  determineIfUserOwnsOneOfTheBooks(req.body.tradeId, req.user._id.toString())
+  .then((result) => {
+    if (!result) {
+      throw new Error('Failed determining owner status');
+    } else {
+      return deleteTrade(req.body.tradeId);
+    }
+  })
+  .then((result) => {
+    if (result) {
+      return res.sendStatus(200);
+    } else {
+       return res.sendStatus(500);
+    }
+  })
+  .catch((err) => {
+    console.log('Error in deleting trade' + err);
+    return res.sendStatus(500);
+  });
+});
+
+function determineIfUserOwnsOneOfTheBooks(tradeId, userId) {
+  return Trade.findOne({_id: tradeId}).exec()
+    .then((trade) => {
+      return Promise.all([
+        Book.findOne({_id: trade.solicitorBookId}).exec(),
+        Book.findOne({_id: trade.bookToTradeId}).exec(),
+      ]);
+    })
+    .then((returnedBookArray) => {
+      if (returnedBookArray[0].bookOwner === userId ||
+        returnedBookArray[1].bookOwner === userId) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .catch((err) => {
+      console.log('Error determining if owner owns one of the books: ' + err);
+      return false;
+    });
+}
+
+// deletes a trade, return true if successful and false if not
+function deleteTrade(tradeId) {
+  return Trade.deleteOne({_id: tradeId}, function(err, result) {
+    if (err) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+}
+
 async function findTradesLinkedToBooks(bookArray) {
   let bookIdArray = bookArray.map((book) => {
     return book.id;

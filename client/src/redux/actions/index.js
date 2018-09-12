@@ -318,3 +318,20 @@ export function getTrades() {
     });
   };
 }
+
+export function deleteTrade(tradeId) {
+  return (dispatch) => {
+    fetch('api/trades/deleteTrade', {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({'tradeId': tradeId}),
+    })
+    .then((resp) => {
+      dispatch(getTrades());
+    })
+    .catch((err) => {
+      console.log('Error in calling delete trade api: ' + err);
+    });
+  };
+}
