@@ -57,7 +57,7 @@ class NavigationBar extends Component {
         <IndexLinkContainer to={'/'}>
           <Navbar.Header>
             <Navbar.Brand>
-              Book Brain
+              <a href={''}>Book Brain</a>
             </Navbar.Brand>
           </Navbar.Header>
         </IndexLinkContainer>
