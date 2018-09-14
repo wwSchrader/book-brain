@@ -11,6 +11,7 @@ const ALL_USERS_BOOK_ARRAY = 'ALL_USERS_BOOK_ARRAY';
 const USER_INFO = 'USER_INFO';
 const REQUESTED_TRADE_LIST = 'REQUESTED_TRADE_LIST';
 const PENDING_TRADE_LIST = 'PENDING_TRADE_LIST';
+const SHOW_USER_REGISTERED_ALERT = 'SHOW_USER_REGISTERED_ALERT';
 
 export function isLoggedIn(bool) {
   return {
@@ -75,12 +76,20 @@ export function registerUserApiCall(user) {
           // and cancel loading state
           dispatch(userIsLoading(false));
           dispatch(loginModalIsOpen(false));
+          dispatch(showUserRegisteredAlert(true));
         }
       })
       .catch((err) => {
         dispatch(userIsLoading(false));
         console.log('Error registering user: ' + err);
       });
+  };
+}
+
+export function showUserRegisteredAlert(bool) {
+  return {
+    type: SHOW_USER_REGISTERED_ALERT,
+    showUserRegisteredAlert: bool,
   };
 }
 
@@ -103,6 +112,7 @@ export function loginUserApiCall(user) {
         dispatch(userLoginFailed(false));
         dispatch(loginModalIsOpen(false));
         dispatch(setUserInfo(res.userId));
+        dispatch(showUserRegisteredAlert(false));
       } else if (!res.isLoggedIn) {
         dispatch(userIsLoading(false));
         dispatch(userLoginFailed(true));

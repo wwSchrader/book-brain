@@ -7,6 +7,7 @@ import {
   loginModalIsOpen,
   userLoginMessageFailure,
   userInfo,
+  showUserRegisteredAlert,
 } from './user.js';
 import {
   addBookModalIsOpen,
@@ -33,6 +34,7 @@ const bookBrainApp = combineReducers({
   userInfo,
   requestedTradeList,
   pendingTradeList,
+  showUserRegisteredAlert,
 });
 
 export default bookBrainApp;

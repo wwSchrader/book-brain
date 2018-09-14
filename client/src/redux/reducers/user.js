@@ -61,3 +61,12 @@ export function userInfo(state = {}, action) {
       return state;
   }
 }
+
+export function showUserRegisteredAlert(state = false, action) {
+  switch (action.type) {
+    case 'SHOW_USER_REGISTERED_ALERT':
+      return action.showUserRegisteredAlert;
+    default:
+      return state;
+  }
+}
