@@ -363,6 +363,7 @@ export function acceptTrade(tradeId) {
 }
 
 export function checkForExistingUserSession() {
+  console.log('checkForExistingUserSession called');
   return (dispatch) => {
     fetch('api/users/checkSession', {
       method: 'GET',
@@ -371,8 +372,10 @@ export function checkForExistingUserSession() {
     .then((resp) => resp.json())
     .then((res) => {
       if (res.isLoggedIn) {
+        console.log("Logged in");
         dispatch(isLoggedIn(true));
       } else {
+        console.log("Not logged in");
         dispatch(isLoggedIn(false));
       }
     })
