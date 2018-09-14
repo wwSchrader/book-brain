@@ -74,7 +74,6 @@ export function registerUserApiCall(user) {
           // if registered, close modal, set as logged in
           // and cancel loading state
           dispatch(userIsLoading(false));
-          dispatch(isLoggedIn(true));
           dispatch(loginModalIsOpen(false));
         }
       })
