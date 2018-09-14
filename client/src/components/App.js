@@ -12,7 +12,6 @@ import {checkForExistingUserSession} from '../redux/actions/index';
 
 class App extends Component {
   componentDidMount() {
-    console.log("Check session called!");
     this.props.checkForExistingUserSession();
   }
 
