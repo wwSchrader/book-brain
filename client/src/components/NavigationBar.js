@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {loginModalIsOpen, logoutUserApiCall} from '../redux/actions/index';
-import {LinkContainer} from 'react-router-bootstrap';
+import {LinkContainer, IndexLinkContainer} from 'react-router-bootstrap';
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -20,13 +20,13 @@ class NavigationBar extends Component {
   showLoginOrLogout() {
     if (this.props.isLoggedIn) {
       return (
-        <NavItem eventKey={1} onClick={this.props.logoutUserApiCall}>
+        <NavItem onClick={this.props.logoutUserApiCall}>
           Logout
         </NavItem>
       );
     } else {
       return (
-        <NavItem eventKey={1} onClick={this.onShowLoginModal}>
+        <NavItem onClick={this.onShowLoginModal}>
           Login
         </NavItem>
       );
@@ -37,11 +37,14 @@ class NavigationBar extends Component {
     if (this.props.isLoggedIn) {
       return (
         <Nav>
-          <LinkContainer to='/mybooks'>
-            <NavItem eventKey={'mybooks'}>My Books</NavItem>
+          <IndexLinkContainer to={'/'}>
+            <NavItem>Home</NavItem>
+          </IndexLinkContainer>
+          <LinkContainer to={'/mybooks'}>
+            <NavItem>My Books</NavItem>
           </LinkContainer>
-          <LinkContainer to='/trades'>
-            <NavItem eventKey={'trades'}>Trades</NavItem>
+          <LinkContainer to={'/trades'}>
+            <NavItem>Trades</NavItem>
           </LinkContainer>
         </Nav>
       );
@@ -51,13 +54,13 @@ class NavigationBar extends Component {
   render() {
     return (
       <Navbar>
-        <LinkContainer to='/'>
+        <IndexLinkContainer to={'/'}>
           <Navbar.Header>
             <Navbar.Brand>
               Book Brain
             </Navbar.Brand>
           </Navbar.Header>
-        </LinkContainer>
+        </IndexLinkContainer>
         {this.showUserNavigationButtons()}
         <Nav pullRight>
           {this.showLoginOrLogout()}
@@ -80,4 +83,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  null,
+  {pure: false},
+  )(NavigationBar);
