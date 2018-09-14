@@ -361,3 +361,23 @@ export function acceptTrade(tradeId) {
     });
   };
 }
+
+export function checkForExistingUserSession() {
+  return (dispatch) => {
+    fetch('api/users/checkSession', {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      if (res.isLoggedIn) {
+        dispatch(isLoggedIn(true));
+      } else {
+        dispatch(isLoggedIn(false));
+      }
+    })
+    .catch((err) => {
+      console.log('Error in calling check session api: ' + err);
+    });
+  };
+}
