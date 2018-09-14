@@ -6,12 +6,14 @@ import MyBooks from './MyBooks';
 import {Route} from 'react-router-dom';
 import Home from './Home';
 import Trades from './Trades';
+import RegisteredUserAlert from './RegisteredUserAlert';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <NavigationBar/>
+        <RegisteredUserAlert/>
         <LoginModal/>
         <Route exact path='/' component={Home} />
         <Route path='/mybooks' component={MyBooks} />
