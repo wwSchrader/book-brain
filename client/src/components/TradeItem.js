@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {deleteTrade} from '../redux/actions/index';
+import {deleteTrade, acceptTrade} from '../redux/actions/index';
 
 class TradeItems extends Component {
   constructor(props) {
@@ -9,13 +9,14 @@ class TradeItems extends Component {
     this.showButton = this.showButton.bind(this);
     this.handleDeleteOrCancelButton =
       this.handleDeleteOrCancelButton.bind(this);
+    this.handleAcceptButton = this.handleAcceptButton.bind(this);
   }
 
   showButton() {
     if (this.props.tradeType === 'requested') {
       return (
         <div style={{'display': 'inline-block'}}>
-          <button>Accept</button>
+          <button onClick={this.handleAcceptButton}>Accept</button>
           <button onClick={this.handleDeleteOrCancelButton}>Reject</button>
         </div>
       );
@@ -26,6 +27,10 @@ class TradeItems extends Component {
 
   handleDeleteOrCancelButton() {
     this.props.deleteTrade(this.props.book._id);
+  }
+
+  handleAcceptButton() {
+    this.props.acceptTrade(this.props.book._id);
   }
 
   render() {
@@ -55,6 +60,7 @@ class TradeItems extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteTrade: (tradeId) => dispatch(deleteTrade(tradeId)),
+    acceptTrade: (tradeId) => dispatch(acceptTrade(tradeId)),
   };
 };
 

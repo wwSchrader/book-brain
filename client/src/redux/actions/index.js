@@ -335,3 +335,20 @@ export function deleteTrade(tradeId) {
     });
   };
 }
+
+export function acceptTrade(tradeId) {
+  return (dispatch) => {
+    fetch('api/trades/acceptTrade', {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({'tradeId': tradeId}),
+    })
+    .then((resp) => {
+      dispatch(getTrades());
+    })
+    .catch((err) => {
+      console.log('Error in calling accept trade api: ' + err);
+    });
+  };
+}

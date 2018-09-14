@@ -73,6 +73,63 @@ router.delete('/deleteTrade', ensureAuthenticated, function(req, res, next) {
   });
 });
 
+router.put('/acceptTrade', ensureAuthenticated, function(req, res, next) {
+  getbookObjects(req.body.tradeId)
+  .then((tradeAndBookArray) => {
+    if (tradeAndBookArray[1].bookOwner === req.user._id.toString()) {
+      return tradeAndBookArray;
+    } else {
+      throw new Error('Trade id does not match');
+    }
+  })
+  .then((tradeAndBookArray) => {
+    return Promise.all([
+      swapOwnershipOfBooks(
+        tradeAndBookArray[1]._id,
+        tradeAndBookArray[1].bookOwner,
+        tradeAndBookArray[2]._id,
+        tradeAndBookArray[2].bookOwner
+      ),
+      deleteTrade(tradeAndBookArray[0]._id),
+    ]);
+  })
+  .then((resolvedPromises) => {
+    res.sendStatus(200);
+  })
+  .catch((err) => {
+    console.log('Error accepting trade: ' + err);
+    res.sendStatus(500);
+  });
+});
+
+function swapOwnershipOfBooks(
+  solicitorId,
+  solicitorBookId,
+  userId,
+  bookToTradeId) {
+    return Promise.all([
+      Book.update({_id: solicitorBookId}, {'bookOwner': userId}).exec(),
+      Book.update({_id: bookToTradeId}, {'bookOwner': solicitorId}).exec(),
+    ])
+    .catch((err) => {
+      return new Error('Error in swapping ownership: ' + err);
+    });
+}
+
+function getbookObjects(tradeId) {
+  return Trade.findOne({_id: tradeId}).exec()
+    .then((trade) => {
+      return Promise.all([
+        trade,
+        Book.findOne({_id: trade.solicitorBookId}).exec(),
+        Book.findOne({_id: trade.bookToTradeId}).exec(),
+      ]);
+    })
+    .catch((err) => {
+      return new Error('Error getting trade or book objects: ' + err);
+    });
+}
+
 function determineIfUserOwnsOneOfTheBooks(tradeId, userId) {
   return Trade.findOne({_id: tradeId}).exec()
     .then((trade) => {
