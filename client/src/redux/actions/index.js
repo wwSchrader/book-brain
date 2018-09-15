@@ -363,24 +363,30 @@ export function acceptTrade(tradeId) {
 }
 
 export function checkForExistingUserSession() {
-  console.log('checkForExistingUserSession called');
   return (dispatch) => {
-    fetch('api/users/checkSession', {
+    return fetch('api/users/checkSession', {
       method: 'GET',
       credentials: 'include',
     })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      if (!resp.ok) {
+        throw new Error('Could not authenticate');
+      } else {
+        return resp.json();
+      }
+    })
     .then((res) => {
       if (res.isLoggedIn) {
-        console.log("Logged in");
         dispatch(isLoggedIn(true));
+        return true;
       } else {
-        console.log("Not logged in");
         dispatch(isLoggedIn(false));
+        return false;
       }
     })
     .catch((err) => {
       console.log('Error in calling check session api: ' + err);
+      return false;
     });
   };
 }

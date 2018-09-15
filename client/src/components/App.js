@@ -12,7 +12,12 @@ import {checkForExistingUserSession} from '../redux/actions/index';
 
 class App extends Component {
   componentDidMount() {
-    this.props.checkForExistingUserSession();
+    this.props.checkForExistingUserSession()
+    .then((isLoggedIn) => {
+      if (!isLoggedIn) {
+        this.props.history.push('/');
+      }
+    });
   }
 
   render() {
