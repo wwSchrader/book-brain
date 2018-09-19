@@ -35,9 +35,9 @@ export function allUsersBookArray(state = [], action) {
 }
 
 export function showSelectBookToGiveUpModal(state = false, action) {
-  switch (actions.type) {
+  switch (action.type) {
     case 'SHOW_SELECT_BOOK_TO_GIVE_UP_MODAL':
-      return actions.showSelectBookToGiveUpModal;
+      return action.showSelectBookToGiveUpModal;
     default:
       return state;
   }
