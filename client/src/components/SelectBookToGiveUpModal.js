@@ -1,25 +1,36 @@
 import React, {Component} from 'react';
 import {Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {getUserBookArray, proposeTrade} from '../redux/actions/index';
+import {
+  getUserBookArray,
+  proposeTrade,
+  showSelectBookToGiveUpModal,
+  setBookIdWanted,
+} from '../redux/actions/index';
 
 class SelectBookToGiveUpModal extends Component {
   constructor(props) {
     super(props);
     this.handleSelectButton = this.handleSelectButton.bind(this);
+    this.hideModal = this.hideModal.bind(this);
   }
+
   componentDidMount() {
     this.props.getUserBookArray();
   }
 
   handleSelectButton(bookIdToGiveUp) {
     this.props.proposeTrade(this.props.bookIdWanted, bookIdToGiveUp);
-    this.props.onHide();
+  }
+
+  hideModal() {
+    this.props.showSelectBookToGiveUpModal(false);
+    this.props.setBookIdWanted(null);
   }
 
   render() {
     return (
-      <Modal show={this.props.showModal} onHide={this.props.onHide}>
+      <Modal show onHide={this.hideModal}>
         <Modal.Header closeButton>
           <Modal.Title>Choose Book To Give Up</Modal.Title>
         </Modal.Header>
@@ -47,6 +58,7 @@ class SelectBookToGiveUpModal extends Component {
 const mapStateToProps = (state) => {
   return {
     bookArray: state.userBookArray,
+    bookIdWanted: state.bookIdWanted,
   };
 };
 
@@ -55,6 +67,9 @@ const mapDispatchToProps = (dispatch) => {
     getUserBookArray: () => dispatch(getUserBookArray()),
     proposeTrade: (bookIdWanted, bookIdToGiveUp) =>
       dispatch(proposeTrade(bookIdWanted, bookIdToGiveUp)),
+    showSelectBookToGiveUpModal: (bool) =>
+      dispatch(showSelectBookToGiveUpModal(bool)),
+    setBookIdWanted: (bookId) => dispatch(setBookIdWanted(bookId)),
   };
 };
 

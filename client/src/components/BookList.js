@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {deleteAUserBook} from '../redux/actions/index';
+import {
+  deleteAUserBook,
+  showSelectBookToGiveUpModal,
+  setBookIdWanted,
+} from '../redux/actions/index';
 import SelectBookToGiveUpModal from './SelectBookToGiveUpModal';
 
 class BookList extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      showSelectBookToGiveUpModal: false,
-      bookIdWanted: null,
-    };
 
     this.decideToRenderAButton = this.decideToRenderAButton.bind(this);
     this.decideToRenderDeleteOrTradeButton =
@@ -18,7 +17,6 @@ class BookList extends Component {
     this.decideToRenderDeleteButtonOrOwnedMsg =
       this.decideToRenderDeleteButtonOrOwnedMsg.bind(this);
     this.handleTradeButtonClick = this.handleTradeButtonClick.bind(this);
-    this.onHideBookToGiveUpModal = this.onHideBookToGiveUpModal.bind(this);
   }
 
   handleInfoButtonClick(bookInfoUrl) {
@@ -66,17 +64,16 @@ class BookList extends Component {
   }
 
   handleTradeButtonClick(bookId) {
-    this.setState({
-      showSelectBookToGiveUpModal: true,
-      bookIdWanted: bookId,
-    });
+    this.props.setBookIdWanted(bookId);
+    this.props.showSelectBookToGiveUpModal(true);
   }
 
-  onHideBookToGiveUpModal() {
-    this.setState({
-      showSelectBookToGiveUpModal: false,
-      bookIdWanted: null,
-    });
+  toShowSelectBookToGiveUpModal() {
+    if (this.props.toShowSelectBookToGiveUpModal) {
+      return <SelectBookToGiveUpModal />;
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -85,11 +82,7 @@ class BookList extends Component {
     } else {
       return (
         <div>
-          <SelectBookToGiveUpModal
-              showModal={this.state.showSelectBookToGiveUpModal}
-              bookIdWanted={this.state.bookIdWanted}
-              onHide={this.onHideBookToGiveUpModal}
-          />
+          {this.toShowSelectBookToGiveUpModal()}
           {this.props.bookArray.map((book) => {
             return (
               <div key={book.bookOwner + book.bookInfoUrl}>
@@ -115,12 +108,16 @@ const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.userIsLoggedIn,
     userId: state.userInfo.userId,
+    toShowSelectBookToGiveUpModal: state.showSelectBookToGiveUpModal,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteAUserBook: (bookId) => dispatch(deleteAUserBook(bookId)),
+    showSelectBookToGiveUpModal: (bool) =>
+      dispatch(showSelectBookToGiveUpModal(bool)),
+    setBookIdWanted: (bookId) => dispatch(setBookIdWanted(bookId)),
   };
 };
 
