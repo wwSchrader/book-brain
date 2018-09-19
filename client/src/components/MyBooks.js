@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {addBookModalIsOpen, getUserBookArray} from '../redux/actions/index';
 import AddBookModal from './AddBookModal';
-import {Redirect} from 'react-router-dom';
 import BookList from './BookList';
 
 class MyBooks extends Component {
@@ -20,20 +19,14 @@ class MyBooks extends Component {
   }
 
   render() {
-    if (this.props.isLoggedIn) {
-      return (
-        <div>
-          <h3>My Books Screen</h3>
-          <button onClick={this.handleAddBookClick}>Add a Book</button>
-          <AddBookModal/>
-          <BookList bookArray={this.props.bookArray} parentComponent={'MyBooks'} />
-        </div>
-      );
-    } else {
-      return (
-        <Redirect to='/'/>
-      );
-    }
+    return (
+      <div>
+        <h3>My Books Screen</h3>
+        <button onClick={this.handleAddBookClick}>Add a Book</button>
+        <AddBookModal/>
+        <BookList bookArray={this.props.bookArray} parentComponent={'MyBooks'}/>
+      </div>
+    );
   }
 }
 
