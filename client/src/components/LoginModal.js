@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {loginModalIsOpen} from '../redux/actions/index';
 import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
+import FacebookButton from './FacebookButton';
 
 class LoginModal extends Component {
   constructor(props) {
@@ -54,6 +55,7 @@ class LoginModal extends Component {
         </Modal.Header>
         <Modal.Body>
           {this.displayLoginOrRegistrationForm()}
+          <FacebookButton/>
         </Modal.Body>
       </Modal>
     );

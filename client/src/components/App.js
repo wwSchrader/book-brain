@@ -12,6 +12,25 @@ import {checkForExistingUserSession} from '../redux/actions/index';
 
 class App extends Component {
   componentDidMount() {
+    // Initialize FB SDK for Login Button
+    window.fbAsyncInit = function() {
+      window.FB.init({
+        appId: '525631557907551',
+        cookie: true,
+        xfbml: true,
+        version: 'v3.1',
+      });
+    };
+
+    (function(d, s, id) {
+      let js = d.getElementsByTagName(s)[0];
+      let fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
     this.props.checkForExistingUserSession()
     .then((isLoggedIn) => {
       if (!isLoggedIn) {
