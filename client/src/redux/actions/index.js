@@ -12,6 +12,8 @@ const USER_INFO = 'USER_INFO';
 const REQUESTED_TRADE_LIST = 'REQUESTED_TRADE_LIST';
 const PENDING_TRADE_LIST = 'PENDING_TRADE_LIST';
 const SHOW_USER_REGISTERED_ALERT = 'SHOW_USER_REGISTERED_ALERT';
+const SHOW_SELECT_BOOK_TO_GIVE_UP_MODAL = 'SHOW_SELECT_BOOK_TO_GIVE_UP_MODAL';
+const BOOK_ID_WANTED = 'BOOK_ID_WANTED';
 
 export function isLoggedIn(bool) {
   return {
@@ -388,5 +390,19 @@ export function checkForExistingUserSession() {
       console.log('Error in calling check session api: ' + err);
       return false;
     });
+  };
+}
+
+export function showSelectBookToGiveUpModal(boolean) {
+  return {
+    type: SHOW_SELECT_BOOK_TO_GIVE_UP_MODAL,
+    showSelectBookToGiveUpModal: boolean,
+  };
+}
+
+export function setBookIdWanted(bookId) {
+  return {
+    type: BOOK_ID_WANTED,
+    bookIdWanted: bookId,
   };
 }

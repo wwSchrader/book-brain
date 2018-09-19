@@ -14,6 +14,8 @@ import {
   bookSearchArray,
   userBookArray,
   allUsersBookArray,
+  showSelectBookToGiveUpModal,
+  bookIdWanted,
 } from './book.js';
 import {
   requestedTradeList,
@@ -35,6 +37,8 @@ const bookBrainApp = combineReducers({
   requestedTradeList,
   pendingTradeList,
   showUserRegisteredAlert,
+  showSelectBookToGiveUpModal,
+  bookIdWanted,
 });
 
 export default bookBrainApp;

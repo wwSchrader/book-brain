@@ -33,3 +33,21 @@ export function allUsersBookArray(state = [], action) {
     return state;
   }
 }
+
+export function showSelectBookToGiveUpModal(state = false, action) {
+  switch (actions.type) {
+    case 'SHOW_SELECT_BOOK_TO_GIVE_UP_MODAL':
+      return actions.showSelectBookToGiveUpModal;
+    default:
+      return state;
+  }
+}
+
+export function bookIdWanted(state = null, action) {
+  switch (action.type) {
+    case 'BOOK_ID_WANTED':
+      return action.bookIdWanted;
+    default:
+      return state;
+  }
+}
