@@ -380,9 +380,11 @@ export function checkForExistingUserSession() {
     .then((res) => {
       if (res.isLoggedIn) {
         dispatch(isLoggedIn(true));
+        dispatch(setUserInfo(res.userId));
         return true;
       } else {
         dispatch(isLoggedIn(false));
+        dispatch(setUserInfo(null));
         return false;
       }
     })

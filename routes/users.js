@@ -62,7 +62,7 @@ router.get('/logout', ensureAuthenticated, function(req, res, next) {
 
 // check to see if user has an existing session
 router.get('/checkSession', ensureAuthenticated, function(req, res, next) {
-  res.json({isLoggedIn: true});
+  res.json({isLoggedIn: true, userId: req.user._id});
 });
 
 module.exports = router;
