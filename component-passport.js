@@ -1,11 +1,13 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookTokenStrategy = require('passport-facebook-token');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const User = require('./models/users');
 const mongoComponent = require('./component-mongo');
 const bcrypt = require('bcrypt');
 const flash = require('connect-flash');
+const findOrCreate = require('mongoose-findorcreate');
 
 function setupPassport(app) {
   app.use(session({
@@ -69,6 +71,19 @@ function setupPassport(app) {
       });
     }
   ));
+
+  passport.use(new FacebookTokenStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+  }, function(accessToken, refrehToken, profile, done) {
+    console.log(profile);
+    User.findOrCreate(
+      {authentication: {facebook: profile.id}},
+      function(err, user) {
+        return done(err, user);
+      }
+    );
+  }));
 }
 
 module.exports = {setupPassport, passport};
