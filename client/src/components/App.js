@@ -8,7 +8,10 @@ import Home from './Home';
 import Trades from './Trades';
 import RegisteredUserAlert from './RegisteredUserAlert';
 import {connect} from 'react-redux';
-import {checkForExistingUserSession} from '../redux/actions/index';
+import {
+  checkForExistingUserSession,
+  facebookAuthenticate,
+} from '../redux/actions/index';
 
 class App extends Component {
   componentDidMount() {
@@ -20,7 +23,11 @@ class App extends Component {
         xfbml: true,
         version: 'v3.1',
       });
-    };
+
+      window.FB.Event.subscribe('auth.login', (response) => {
+        this.props.facebookAuthenticate(response.authResponse.accessToken);
+      });
+    }.bind(this);
 
     (function(d, s, id) {
       let js = d.getElementsByTagName(s)[0];
@@ -56,6 +63,7 @@ class App extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     checkForExistingUserSession: () => dispatch(checkForExistingUserSession()),
+    facebookAuthenticate: (facebookToken) => dispatch(facebookAuthenticate(facebookToken)),
   };
 };
 

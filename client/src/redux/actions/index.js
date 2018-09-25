@@ -408,3 +408,32 @@ export function setBookIdWanted(bookId) {
     bookIdWanted: bookId,
   };
 }
+
+export function facebookAuthenticate(facebookToken) {
+  return (dispatch) => {
+    return fetch('/api/users/facebook/token', {
+      'method': 'POST',
+      'credentials': 'include',
+      'headers': {'Content-Type': 'application/json'},
+      'body': JSON.stringify({'access_token': facebookToken}),
+    })
+    .then((resp) => resp.json())
+    .then((res) => {
+      if (res.isLoggedIn) {
+        dispatch(userIsLoading(false));
+        dispatch(isLoggedIn(true));
+        dispatch(userLoginFailed(false));
+        dispatch(loginModalIsOpen(false));
+        dispatch(setUserInfo(res.userId));
+        dispatch(showUserRegisteredAlert(false));
+      } else if (!res.isLoggedIn) {
+        dispatch(userIsLoading(false));
+        dispatch(userLoginFailed(true));
+        dispatch(userLoginFailedMessage(res.authError));
+      }
+    })
+    .catch((err) => {
+      console.log('Error authenticating Facebook Token: ' + err);
+    });
+  };
+}

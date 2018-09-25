@@ -7,7 +7,6 @@ const User = require('./models/users');
 const mongoComponent = require('./component-mongo');
 const bcrypt = require('bcrypt');
 const flash = require('connect-flash');
-const findOrCreate = require('mongoose-findorcreate');
 
 function setupPassport(app) {
   app.use(session({
@@ -76,9 +75,9 @@ function setupPassport(app) {
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
   }, function(accessToken, refrehToken, profile, done) {
-    console.log(profile);
     User.findOrCreate(
-      {authentication: {facebook: profile.id}},
+      {'authentication.facebook.profileId': profile.id},
+      {'username': profile.displayName},
       function(err, user) {
         return done(err, user);
       }

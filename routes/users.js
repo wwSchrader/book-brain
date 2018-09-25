@@ -68,11 +68,18 @@ router.get('/checkSession', ensureAuthenticated, function(req, res, next) {
 // facebook authentication route
 router.post(
   '/facebook/token',
-  passportComponent.passport.authenticate('facebook-token'),
-  function(req, res) {
+  passportComponent.passport
+    .authenticate('facebook-token'),
+  (req, res) => {
     if (req.user) {
       return res.json({isLoggedIn: true, userId: req.user._id});
     }
-  });
+  },
+  (err, req, res, next) => {
+    console.log('Error with Facebook auth');
+    console.log(err);
+    return res.status(401);
+  }
+);
 
 module.exports = router;
