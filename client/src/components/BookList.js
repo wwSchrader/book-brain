@@ -6,6 +6,8 @@ import {
   setBookIdWanted,
 } from '../redux/actions/index';
 import SelectBookToGiveUpModal from './SelectBookToGiveUpModal';
+import './BookList.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 class BookList extends Component {
   constructor(props) {
@@ -37,11 +39,11 @@ class BookList extends Component {
     // if in MyBooks Component, return delete button
     if (this.props.parentComponent === 'MyBooks') {
       return (
-        <button
+        <FontAwesomeIcon
+            icon='ban'
             onClick={() => this.props.deleteAUserBook(bookId)}
-        >
-        Delete
-        </button>
+            className='action-icon'
+        />
       );
     } else if (this.props.parentComponent === 'Home') {
       // return trade button if in Home Component
@@ -53,12 +55,14 @@ class BookList extends Component {
 
   decideToRenderDeleteButtonOrOwnedMsg(bookId, bookOwner) {
     if (bookOwner === this.props.userId) {
-      return <h5>Owned</h5>;
+      return <FontAwesomeIcon icon='check-circle' className='action-icon'/>;
     } else {
       return (
-        <button onClick={() => this.handleTradeButtonClick(bookId)}>
-          Trade
-        </button>
+        <FontAwesomeIcon
+            icon='exchange-alt'
+            onClick={() => this.handleTradeButtonClick(bookId)}
+            className='action-icon'
+        />
       );
     }
   }
@@ -85,15 +89,13 @@ class BookList extends Component {
           {this.toShowSelectBookToGiveUpModal()}
           {this.props.bookArray.map((book) => {
             return (
-              <div key={book.bookOwner + book.bookInfoUrl}>
-                <h3>{book.bookTitle}</h3>
+              <div className='book-item' key={book.bookOwner + book.bookInfoUrl}>
                 <img
+                    className='book-thumbnail-image'
                     src={book.bookThumbnailUrl}
                     alt={'Book cover of ' + book.bookTitle}
-                />
-                <button
                     onClick={() => this.handleInfoButtonClick(book.bookInfoUrl)}
-                >Book Info</button>
+                />
                 {this.decideToRenderAButton(book._id, book.bookOwner)}
               </div>
             );

@@ -12,6 +12,14 @@ import {
   checkForExistingUserSession,
   facebookAuthenticate,
 } from '../redux/actions/index';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {
+  faExchangeAlt,
+  faCheckCircle,
+  faBan,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(faExchangeAlt, faCheckCircle, faBan);
 
 class App extends Component {
   componentDidMount() {
