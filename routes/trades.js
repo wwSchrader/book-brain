@@ -103,10 +103,10 @@ router.put('/acceptTrade', ensureAuthenticated, function(req, res, next) {
 });
 
 function swapOwnershipOfBooks(
-  solicitorId,
   solicitorBookId,
-  userId,
-  bookToTradeId) {
+  solicitorId,
+  bookToTradeId,
+  userId) {
     return Promise.all([
       Book.update({_id: solicitorBookId}, {'bookOwner': userId}).exec(),
       Book.update({_id: bookToTradeId}, {'bookOwner': solicitorId}).exec(),
