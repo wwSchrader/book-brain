@@ -8,6 +8,7 @@ import {
 import SelectBookToGiveUpModal from './SelectBookToGiveUpModal';
 import './BookList.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import Masonry from 'react-masonry-component';
 
 class BookList extends Component {
   constructor(props) {
@@ -87,24 +88,26 @@ class BookList extends Component {
       return (
         <div>
           {this.toShowSelectBookToGiveUpModal()}
-          {this.props.bookArray.map((book) => {
-            return (
-              <div
-                  className='book-item'
-                  key={book.bookOwner + book.bookInfoUrl}
-              >
-                <img
-                    className='book-thumbnail-image'
-                    src={book.bookThumbnailUrl}
-                    alt={'Book cover of ' + book.bookTitle}
-                    onClick={
-                      () => this.handleInfoButtonClick(book.bookInfoUrl)
-                    }
-                />
-                {this.decideToRenderAButton(book._id, book.bookOwner)}
-              </div>
-            );
-          })}
+          <Masonry>
+            {this.props.bookArray.map((book) => {
+              return (
+                <div
+                    className='book-item'
+                    key={book.bookOwner + book.bookInfoUrl}
+                >
+                  <img
+                      className='book-thumbnail-image'
+                      src={book.bookThumbnailUrl}
+                      alt={'Book cover of ' + book.bookTitle}
+                      onClick={
+                        () => this.handleInfoButtonClick(book.bookInfoUrl)
+                      }
+                  />
+                  {this.decideToRenderAButton(book._id, book.bookOwner)}
+                </div>
+              );
+            })}
+          </Masonry>
         </div>
       );
     }
