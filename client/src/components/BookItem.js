@@ -24,6 +24,11 @@ const deleteToolTip =
     Delete this book.
   </Tooltip>;
 
+const pendingTradeToolTip =
+  <Tooltip id='tradeToolTip'>
+    A trade is pending on this book.
+  </Tooltip>;
+
 class BookItem extends Component {
   constructor(props) {
     super(props);
@@ -83,6 +88,16 @@ class BookItem extends Component {
         <OverlayTrigger placement='top' overlay={ownershipToolTip}>
           <FontAwesomeIcon
               icon='check-circle'
+              className={this.state.actionIconClass}
+          />
+        </OverlayTrigger>
+      );
+    } else if (this.props.pendingTrades.find(
+        (trade) => trade.solicitorBook._id === bookId)) {
+      return (
+        <OverlayTrigger placement='top' overlay={pendingTradeToolTip}>
+          <FontAwesomeIcon
+              icon='clock'
               className={this.state.actionIconClass}
           />
         </OverlayTrigger>
@@ -148,6 +163,7 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.userIsLoggedIn,
     userId: state.userInfo.userId,
     toShowSelectBookToGiveUpModal: state.showSelectBookToGiveUpModal,
+    pendingTrades: state.pendingTradeList,
   };
 };
 

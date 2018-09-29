@@ -17,9 +17,10 @@ import {
   faExchangeAlt,
   faCheckCircle,
   faBan,
+  faClock,
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faExchangeAlt, faCheckCircle, faBan);
+library.add(faExchangeAlt, faCheckCircle, faBan, faClock);
 
 class App extends Component {
   componentDidMount() {
