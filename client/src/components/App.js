@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {
   checkForExistingUserSession,
   facebookAuthenticate,
+  getTrades,
 } from '../redux/actions/index';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -51,6 +52,8 @@ class App extends Component {
     .then((isLoggedIn) => {
       if (!isLoggedIn) {
         this.props.history.push('/');
+      } else {
+        this.props.getTrades();
       }
     });
   }
@@ -72,7 +75,9 @@ class App extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     checkForExistingUserSession: () => dispatch(checkForExistingUserSession()),
-    facebookAuthenticate: (facebookToken) => dispatch(facebookAuthenticate(facebookToken)),
+    facebookAuthenticate:
+      (facebookToken) => dispatch(facebookAuthenticate(facebookToken)),
+    getTrades: () => dispatch(getTrades()),
   };
 };
 
