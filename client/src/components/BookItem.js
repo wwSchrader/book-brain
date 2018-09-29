@@ -7,6 +7,22 @@ import {
 } from '../redux/actions/index';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import './BookItem.css';
+import {Tooltip, OverlayTrigger} from 'react-bootstrap';
+
+const tradeToolTip =
+  <Tooltip id='tradeToolTip'>
+    Trade for this book.
+  </Tooltip>;
+
+const ownershipToolTip =
+  <Tooltip id='tradeToolTip'>
+    You own this book.
+  </Tooltip>;
+
+const deleteToolTip =
+  <Tooltip id='tradeToolTip'>
+    Delete this book.
+  </Tooltip>;
 
 class BookItem extends Component {
   constructor(props) {
@@ -45,11 +61,13 @@ class BookItem extends Component {
     // if in MyBooks Component, return delete button
     if (this.props.parentComponent === 'MyBooks') {
       return (
-        <FontAwesomeIcon
-            icon='ban'
-            onClick={() => this.props.deleteAUserBook(bookId)}
-            className={this.state.actionIconClass}
-        />
+        <OverlayTrigger placement='top' overlay={deleteToolTip}>
+          <FontAwesomeIcon
+              icon='ban'
+              onClick={() => this.props.deleteAUserBook(bookId)}
+              className={this.state.actionIconClass}
+          />
+        </OverlayTrigger>
       );
     } else if (this.props.parentComponent === 'Home') {
       // return trade button if in Home Component
@@ -61,19 +79,28 @@ class BookItem extends Component {
 
   decideToRenderDeleteButtonOrOwnedMsg(bookId, bookOwner) {
     if (bookOwner === this.props.userId) {
-      return <FontAwesomeIcon icon='check-circle' className={this.state.actionIconClass}/>;
+      return (
+        <OverlayTrigger placement='top' overlay={ownershipToolTip}>
+          <FontAwesomeIcon
+              icon='check-circle'
+              className={this.state.actionIconClass}
+          />
+        </OverlayTrigger>
+      );
     } else {
       return (
-        <FontAwesomeIcon
-            icon='exchange-alt'
-            onClick={() => this.handleTradeButtonClick(bookId)}
-            className={this.state.actionIconClass}
-        />
+        <OverlayTrigger placement='top' overlay={tradeToolTip}>
+          <FontAwesomeIcon
+              icon='exchange-alt'
+              onClick={() => this.handleTradeButtonClick(bookId)}
+              className={this.state.actionIconClass}
+          />
+        </OverlayTrigger>
       );
     }
   }
 
-    handleTradeButtonClick(bookId) {
+  handleTradeButtonClick(bookId) {
     this.props.setBookIdWanted(bookId);
     this.props.showSelectBookToGiveUpModal(true);
   }
@@ -94,7 +121,11 @@ class BookItem extends Component {
 
   render() {
     return (
-      <div className='book-item' onMouseOver={this.handleImageHoverEvent} onMouseOut={this.handleImageHoverOffEvent}>
+      <div
+          className='book-item'
+          onMouseOver={this.handleImageHoverEvent}
+          onMouseOut={this.handleImageHoverOffEvent}
+      >
         <img
             className={this.state.bookThumbnailClass}
             src={this.props.book.bookThumbnailUrl}
@@ -103,7 +134,10 @@ class BookItem extends Component {
               () => this.handleInfoButtonClick(this.props.book.bookInfoUrl)
             }
         />
-        {this.decideToRenderAButton(this.props.book._id, this.props.book.bookOwner)}
+        {this.decideToRenderAButton(
+            this.props.book._id,
+            this.props.book.bookOwner
+        )}
       </div>
     );
   }
