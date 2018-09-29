@@ -34,29 +34,43 @@ class SelectBookToGiveUpModal extends Component {
   }
 
   render() {
-    return (
-      <Modal show onHide={this.hideModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Choose Book To Give Up</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {this.props.bookArray.map((book) => {
-            return (
-              <div key={book._id}>
-                <h3>{book.bookTitle}</h3>
-                <img
-                    src={book.bookThumbnailUrl}
-                    alt={'Book cover of ' + book.bookTitle}
-                />
-                <button onClick={() => this.handleSelectButton(book._id)}>
-                  Select
-                </button>
-              </div>
-            );
-          })}
-        </Modal.Body>
-      </Modal>
-    );
+    if (this.props.bookArray.length === 0) {
+      return (
+        <Modal show onHide={this.hideModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Choose Book To Give Up</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h2>You need to add a book to your collection first.</h2>
+            <h3>Go to My Books to add a book.</h3>
+          </Modal.Body>
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal show onHide={this.hideModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Choose Book To Give Up</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.props.bookArray.map((book) => {
+              return (
+                <div key={book._id}>
+                  <h3>{book.bookTitle}</h3>
+                  <img
+                      src={book.bookThumbnailUrl}
+                      alt={'Book cover of ' + book.bookTitle}
+                  />
+                  <button onClick={() => this.handleSelectButton(book._id)}>
+                    Select
+                  </button>
+                </div>
+              );
+            })}
+          </Modal.Body>
+        </Modal>
+      );
+    }
   }
 }
 
