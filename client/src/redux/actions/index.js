@@ -191,6 +191,7 @@ export function addBookToUserCollection(bookSearchIndex) {
       if (res.bookIsAdded) {
         // close modal if book is added
         dispatch(addBookModalIsOpen(false));
+        dispatch(getUserBookArray());
       }
     })
     .catch((err) => {
