@@ -7,6 +7,7 @@ import {
   showSelectBookToGiveUpModal,
   setBookIdWanted,
 } from '../redux/actions/index';
+import {withRouter} from 'react-router-dom';
 
 class SelectBookToGiveUpModal extends Component {
   constructor(props) {
@@ -20,7 +21,11 @@ class SelectBookToGiveUpModal extends Component {
   }
 
   handleSelectButton(bookIdToGiveUp) {
-    this.props.proposeTrade(this.props.bookIdWanted, bookIdToGiveUp);
+    this.props.proposeTrade(this.props.bookIdWanted, bookIdToGiveUp)
+    .then((didComplete) => {
+      this.hideModal();
+      this.props.history.push('/trades');
+    });
   }
 
   hideModal() {
@@ -73,5 +78,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps, mapDispatchToProps)(SelectBookToGiveUpModal);
+export default withRouter(connect(
+  mapStateToProps, mapDispatchToProps)(SelectBookToGiveUpModal));

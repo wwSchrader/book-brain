@@ -290,7 +290,7 @@ export function setPendingTradeList(pendingTradeArray) {
 
 export function proposeTrade(bookIdWanted, bookIdToGiveUp) {
   return (dispatch) => {
-    fetch('api/trades/propose', {
+    return fetch('api/trades/propose', {
       method: 'POST',
       credentials: 'include',
       headers: {'Content-Type': 'application/json'},
@@ -303,6 +303,7 @@ export function proposeTrade(bookIdWanted, bookIdToGiveUp) {
     .then((res) => {
       if (res.tradePosted) {
         console.log('Trade posted successfully!');
+        return true;
       } else {
         console.log('Error in posting trade');
       }

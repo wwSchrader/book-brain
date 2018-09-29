@@ -89,12 +89,17 @@ class BookList extends Component {
           {this.toShowSelectBookToGiveUpModal()}
           {this.props.bookArray.map((book) => {
             return (
-              <div className='book-item' key={book.bookOwner + book.bookInfoUrl}>
+              <div
+                  className='book-item'
+                  key={book.bookOwner + book.bookInfoUrl}
+              >
                 <img
                     className='book-thumbnail-image'
                     src={book.bookThumbnailUrl}
                     alt={'Book cover of ' + book.bookTitle}
-                    onClick={() => this.handleInfoButtonClick(book.bookInfoUrl)}
+                    onClick={
+                      () => this.handleInfoButtonClick(book.bookInfoUrl)
+                    }
                 />
                 {this.decideToRenderAButton(book._id, book.bookOwner)}
               </div>
