@@ -1,10 +1,9 @@
 .book-thumbnail-image {
   cursor: pointer;
-  opacity: 1;
   position: relative;
 }
 
-.book-thumbnail-image:hover {
+.book-thumbnail-image-hover {
   opacity: 0.5;
 }
 
@@ -17,4 +16,12 @@
   left: 50%;
   bottom: 50%;
   cursor: pointer;
+}
+
+.action-icon-on {
+  opacity: 1;
+}
+
+.action-icon-off {
+  opacity: 0;
 }

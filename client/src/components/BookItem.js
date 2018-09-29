@@ -12,12 +12,19 @@ class BookItem extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      bookThumbnailClass: 'book-thumbnail-image',
+      actionIconClass: 'action-icon action-icon-off',
+    };
+
     this.decideToRenderAButton = this.decideToRenderAButton.bind(this);
     this.decideToRenderDeleteOrTradeButton =
       this.decideToRenderDeleteOrTradeButton.bind(this);
     this.decideToRenderDeleteButtonOrOwnedMsg =
       this.decideToRenderDeleteButtonOrOwnedMsg.bind(this);
     this.handleTradeButtonClick = this.handleTradeButtonClick.bind(this);
+    this.handleImageHoverEvent = this.handleImageHoverEvent.bind(this);
+    this.handleImageHoverOffEvent = this.handleImageHoverOffEvent.bind(this);
   }
 
   handleInfoButtonClick(bookInfoUrl) {
@@ -41,7 +48,7 @@ class BookItem extends Component {
         <FontAwesomeIcon
             icon='ban'
             onClick={() => this.props.deleteAUserBook(bookId)}
-            className='action-icon'
+            className={this.state.actionIconClass}
         />
       );
     } else if (this.props.parentComponent === 'Home') {
@@ -54,13 +61,13 @@ class BookItem extends Component {
 
   decideToRenderDeleteButtonOrOwnedMsg(bookId, bookOwner) {
     if (bookOwner === this.props.userId) {
-      return <FontAwesomeIcon icon='check-circle' className='action-icon'/>;
+      return <FontAwesomeIcon icon='check-circle' className={this.state.actionIconClass}/>;
     } else {
       return (
         <FontAwesomeIcon
             icon='exchange-alt'
             onClick={() => this.handleTradeButtonClick(bookId)}
-            className='action-icon'
+            className={this.state.actionIconClass}
         />
       );
     }
@@ -71,11 +78,25 @@ class BookItem extends Component {
     this.props.showSelectBookToGiveUpModal(true);
   }
 
+  handleImageHoverEvent() {
+    this.setState({
+      bookThumbnailClass: 'book-thumbnail-image book-thumbnail-image-hover',
+      actionIconClass: 'action-icon action-icon-on',
+    });
+  }
+
+  handleImageHoverOffEvent() {
+    this.setState({
+      bookThumbnailClass: 'book-thumbnail-image',
+      actionIconClass: 'action-icon action-icon-off',
+    });
+  }
+
   render() {
     return (
-      <div className='book-item'>
+      <div className='book-item' onMouseOver={this.handleImageHoverEvent} onMouseOut={this.handleImageHoverOffEvent}>
         <img
-            className='book-thumbnail-image'
+            className={this.state.bookThumbnailClass}
             src={this.props.book.bookThumbnailUrl}
             alt={'Book cover of ' + this.props.book.bookTitle}
             onClick={
