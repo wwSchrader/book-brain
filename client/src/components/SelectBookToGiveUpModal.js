@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal} from 'react-bootstrap';
+import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {
   getUserBookArray,
@@ -14,6 +14,7 @@ class SelectBookToGiveUpModal extends Component {
     super(props);
     this.handleSelectButton = this.handleSelectButton.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.toDisableButton = this.toDisableButton.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +32,15 @@ class SelectBookToGiveUpModal extends Component {
   hideModal() {
     this.props.showSelectBookToGiveUpModal(false);
     this.props.setBookIdWanted(null);
+  }
+
+  toDisableButton(bookId) {
+    if (this.props.pendingTrades.find(
+        (trade) => trade.bookToTrade._id === bookId)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   render() {
@@ -61,9 +71,12 @@ class SelectBookToGiveUpModal extends Component {
                       src={book.bookThumbnailUrl}
                       alt={'Book cover of ' + book.bookTitle}
                   />
-                  <button onClick={() => this.handleSelectButton(book._id)}>
+                  <Button
+                      onClick={() => this.handleSelectButton(book._id)}
+                      disabled={this.toDisableButton(book._id)}
+                  >
                     Select
-                  </button>
+                  </Button>
                 </div>
               );
             })}
@@ -78,6 +91,7 @@ const mapStateToProps = (state) => {
   return {
     bookArray: state.userBookArray,
     bookIdWanted: state.bookIdWanted,
+    pendingTrades: state.pendingTradeList,
   };
 };
 
