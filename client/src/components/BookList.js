@@ -4,6 +4,7 @@ import {showSelectBookToGiveUpModal} from '../redux/actions/index';
 import SelectBookToGiveUpModal from './SelectBookToGiveUpModal';
 import Masonry from 'react-masonry-component';
 import BookItem from './BookItem';
+import './BookList.css';
 
 class BookList extends Component {
   toShowSelectBookToGiveUpModal() {
@@ -21,7 +22,7 @@ class BookList extends Component {
       return (
         <div>
           {this.toShowSelectBookToGiveUpModal()}
-          <Masonry>
+          <Masonry className='masonry'>
             {this.props.bookArray.map((book) => {
               return (
                 <BookItem
