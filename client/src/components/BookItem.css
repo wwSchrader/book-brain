@@ -15,8 +15,8 @@
 
 .action-icon {
   position: absolute;
-  left: 50%;
-  bottom: 50%;
+  left: 45%;
+  bottom: 25%;
   cursor: pointer;
 }
 
@@ -26,4 +26,20 @@
 
 .action-icon-off {
   opacity: 0;
+}
+
+.action-icon-exchange {
+  color: yellow;
+}
+
+.action-icon-ownership {
+  color: green;
+}
+
+.action-icon-delete {
+  color: red;
+}
+
+.action-icon-pending {
+  color: #EF8D0D;
 }

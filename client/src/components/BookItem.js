@@ -70,7 +70,8 @@ class BookItem extends Component {
           <FontAwesomeIcon
               icon='ban'
               onClick={() => this.props.deleteAUserBook(bookId)}
-              className={this.state.actionIconClass}
+              className={this.state.actionIconClass + ' action-icon-delete'}
+              size='2x'
           />
         </OverlayTrigger>
       );
@@ -88,7 +89,8 @@ class BookItem extends Component {
         <OverlayTrigger placement='top' overlay={ownershipToolTip}>
           <FontAwesomeIcon
               icon='check-circle'
-              className={this.state.actionIconClass}
+              className={this.state.actionIconClass + ' action-icon-ownership'}
+              size='2x'
           />
         </OverlayTrigger>
       );
@@ -98,7 +100,8 @@ class BookItem extends Component {
         <OverlayTrigger placement='top' overlay={pendingTradeToolTip}>
           <FontAwesomeIcon
               icon='clock'
-              className={this.state.actionIconClass}
+              className={this.state.actionIconClass + ' action-icon-pending'}
+              size='2x'
           />
         </OverlayTrigger>
       );
@@ -108,7 +111,8 @@ class BookItem extends Component {
           <FontAwesomeIcon
               icon='exchange-alt'
               onClick={() => this.handleTradeButtonClick(bookId)}
-              className={this.state.actionIconClass}
+              className={this.state.actionIconClass + ' action-icon-exchange'}
+              size='2x'
           />
         </OverlayTrigger>
       );
