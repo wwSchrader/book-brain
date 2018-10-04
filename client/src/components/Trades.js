@@ -20,7 +20,7 @@ class Trades extends Component {
       return (
         <div>
           {this.props.pendingTradeList.map((book) => {
-            return <TradeItem book={book} tradeType='pending' />;
+            return <TradeItem key={book._id} book={book} tradeType='pending' />;
           })}
         </div>
       );
@@ -34,7 +34,7 @@ class Trades extends Component {
       return (
         <div>
           {this.props.requestedTradeList.map((book) => {
-            return <TradeItem book={book} tradeType='requested' />;
+            return <TradeItem key={book._id} tradeType='requested' />;
           })}
         </div>
       );
