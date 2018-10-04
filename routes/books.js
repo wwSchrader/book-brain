@@ -19,7 +19,10 @@ router.get('/getbook/:bookTitle',
         let thumbnail = '';
 
         if (individualBook.volumeInfo.imageLinks !== undefined) {
-          thumbnail = individualBook.volumeInfo.imageLinks.thumbnail;
+          // change protocol of thumbnail urls to https
+          let unsecuredThumbnail =
+            individualBook.volumeInfo.imageLinks.thumbnail;
+          thumbnail = unsecuredThumbnail.replace(/^http:\/\//i, 'https://');
         }
         return {
           bookTitle: individualBook.volumeInfo.title,
