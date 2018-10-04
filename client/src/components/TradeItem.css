@@ -1,0 +1,13 @@
+.trade-parent {
+  text-align: center;
+  border-style: solid;
+}
+
+.trade-thumbnail {
+  display: inline-block;
+  border-style: solid;
+}
+
+.trade-indicator {
+  display: inline-block;
+}

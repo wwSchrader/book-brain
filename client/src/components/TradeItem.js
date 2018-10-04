@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {deleteTrade, acceptTrade} from '../redux/actions/index';
+import './TradeItem.css';
 
 class TradeItems extends Component {
   constructor(props) {
@@ -35,16 +36,16 @@ class TradeItems extends Component {
 
   render() {
     return (
-      <div style={{'text-align': 'center', 'border-style': 'solid'}}>
-        <div style={{'display': 'inline-block', 'border-style': 'solid'}}>
+      <div className='trade-parent'>
+        <div className='trade-thumbnail'>
           <h3>{this.props.book.solicitorBook.bookTitle}</h3>
           <img
               src={this.props.book.solicitorBook.bookThumbnailUrl}
               alt={'Book cover of ' + this.props.book.solicitorBook.bookTitle}
           />
         </div>
-        <h2 style={{'display': 'inline-block'}}>For</h2>
-        <div style={{'display': 'inline-block', 'border-style': 'solid'}}>
+        <h2 className='trade-indicator'>For</h2>
+        <div className='trade-thumbnail'>
           <h3>{this.props.book.bookToTrade.bookTitle}</h3>
           <img
               src={this.props.book.bookToTrade.bookThumbnailUrl}
