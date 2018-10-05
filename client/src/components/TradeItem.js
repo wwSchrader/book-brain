@@ -27,29 +27,29 @@ class TradeItems extends Component {
   }
 
   handleDeleteOrCancelButton() {
-    this.props.deleteTrade(this.props.book._id);
+    this.props.deleteTrade(this.props.trade._id);
   }
 
   handleAcceptButton() {
-    this.props.acceptTrade(this.props.book._id);
+    this.props.acceptTrade(this.props.trade._id);
   }
 
   render() {
     return (
       <div className='trade-parent'>
         <div className='trade-thumbnail'>
-          <h3>{this.props.book.solicitorBook.bookTitle}</h3>
+          <h3>{this.props.trade.solicitorBook.bookTitle}</h3>
           <img
-              src={this.props.book.solicitorBook.bookThumbnailUrl}
-              alt={'Book cover of ' + this.props.book.solicitorBook.bookTitle}
+              src={this.props.trade.solicitorBook.bookThumbnailUrl}
+              alt={'Book cover of ' + this.props.trade.solicitorBook.bookTitle}
           />
         </div>
         <h2 className='trade-indicator'>For</h2>
         <div className='trade-thumbnail'>
-          <h3>{this.props.book.bookToTrade.bookTitle}</h3>
+          <h3>{this.props.trade.bookToTrade.bookTitle}</h3>
           <img
-              src={this.props.book.bookToTrade.bookThumbnailUrl}
-              alt={'Book cover of ' + this.props.book.bookToTrade.bookTitle}
+              src={this.props.trade.bookToTrade.bookThumbnailUrl}
+              alt={'Book cover of ' + this.props.trade.bookToTrade.bookTitle}
           />
         </div>
         {this.showButton()}

@@ -19,8 +19,14 @@ class Trades extends Component {
     } else {
       return (
         <div>
-          {this.props.pendingTradeList.map((book) => {
-            return <TradeItem key={book._id} book={book} tradeType='pending' />;
+          {this.props.pendingTradeList.map((tradeItem) => {
+            return (
+              <TradeItem
+                  key={tradeItem._id}
+                  trade={tradeItem}
+                  tradeType='pending'
+              />
+            );
           })}
         </div>
       );
@@ -33,8 +39,14 @@ class Trades extends Component {
     } else {
       return (
         <div>
-          {this.props.requestedTradeList.map((book) => {
-            return <TradeItem key={book._id} tradeType='requested' />;
+          {this.props.requestedTradeList.map((tradeItem) => {
+            return (
+              <TradeItem
+                  key={tradeItem._id}
+                  trade={tradeItem}
+                  tradeType='requested'
+              />
+            );
           })}
         </div>
       );
