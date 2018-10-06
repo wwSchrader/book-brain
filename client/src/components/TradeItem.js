@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {deleteTrade, acceptTrade} from '../redux/actions/index';
 import './TradeItem.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {Button} from 'react-bootstrap';
 
 class TradeItems extends Component {
   constructor(props) {
@@ -16,13 +18,27 @@ class TradeItems extends Component {
   showButton() {
     if (this.props.tradeType === 'requested') {
       return (
-        <div style={{'display': 'inline-block'}}>
-          <button onClick={this.handleAcceptButton}>Accept</button>
-          <button onClick={this.handleDeleteOrCancelButton}>Reject</button>
+        <div>
+          <Button
+              className='trade-button'
+              bsStyle="success"
+              onClick={this.handleAcceptButton}
+          >Accept</Button>
+          <Button
+              className='trade-button'
+              bsStyle="danger"
+              onClick={this.handleDeleteOrCancelButton}
+          >Reject</Button>
         </div>
       );
     } else if (this.props.tradeType === 'pending') {
-      return <button onClick={this.handleDeleteOrCancelButton}>Cancel</button>;
+      return (
+        <Button
+            className='trade-button'
+            bsStyle="danger"
+            onClick={this.handleDeleteOrCancelButton}
+        >Cancel</Button>
+      );
     }
   }
 
@@ -37,22 +53,24 @@ class TradeItems extends Component {
   render() {
     return (
       <div className='trade-parent'>
-        <div className='trade-thumbnail'>
-          <h3>{this.props.trade.solicitorBook.bookTitle}</h3>
-          <img
-              src={this.props.trade.solicitorBook.bookThumbnailUrl}
-              alt={'Book cover of ' + this.props.trade.solicitorBook.bookTitle}
+        <img
+            className='trade-thumbnail'
+            src={this.props.trade.solicitorBook.bookThumbnailUrl}
+            alt={'Book cover of ' + this.props.trade.solicitorBook.bookTitle}
+        />
+        <div className='trade-indicator'>
+          <FontAwesomeIcon
+              className='trade-icon'
+              icon='exchange-alt'
+              size='5x'
           />
+          {this.showButton()}
         </div>
-        <h2 className='trade-indicator'>For</h2>
-        <div className='trade-thumbnail'>
-          <h3>{this.props.trade.bookToTrade.bookTitle}</h3>
-          <img
-              src={this.props.trade.bookToTrade.bookThumbnailUrl}
-              alt={'Book cover of ' + this.props.trade.bookToTrade.bookTitle}
-          />
-        </div>
-        {this.showButton()}
+        <img
+            className='trade-thumbnail'
+            src={this.props.trade.bookToTrade.bookThumbnailUrl}
+            alt={'Book cover of ' + this.props.trade.bookToTrade.bookTitle}
+        />
       </div>
     );
   }

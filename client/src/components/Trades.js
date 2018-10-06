@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getTrades} from '../redux/actions/index';
 import TradeItem from './TradeItem';
+import './Trades.css';
 
 class Trades extends Component {
   constructor(props) {
@@ -19,6 +20,11 @@ class Trades extends Component {
     } else {
       return (
         <div>
+          <div>
+            <h3 className='pending-trade-header'>Get</h3>
+            <h4 className='pending-trade-header'>In exchange</h4>
+            <h3 className='pending-trade-header'>For</h3>
+          </div>
           {this.props.pendingTradeList.map((tradeItem) => {
             return (
               <TradeItem
@@ -39,6 +45,11 @@ class Trades extends Component {
     } else {
       return (
         <div>
+          <div>
+            <h3 className='pending-trade-header'>For</h3>
+            <h4 className='pending-trade-header'>In exchange</h4>
+            <h3 className='pending-trade-header'>Get</h3>
+          </div>
           {this.props.requestedTradeList.map((tradeItem) => {
             return (
               <TradeItem
