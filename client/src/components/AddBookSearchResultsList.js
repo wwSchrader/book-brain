@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import AddBookSearchResultsItem from './AddBookSearchResultsItem';
 import {connect} from 'react-redux';
+import './AddBookSearchResultsList.css';
 
 class AddBooksSearchResultList extends Component {
   render() {
     return (
-      <div>
-        <h5>Results List</h5>
+      <div className='search-item-container'>
         {this.props.bookSearchArray &&
           this.props.bookSearchArray.map((searchResult, index) => {
             return (

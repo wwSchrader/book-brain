@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {addBookToUserCollection} from '../redux/actions/index';
+import './AddBookSearchResultsItem.css';
+import {Button} from 'react-bootstrap';
 
 class AddBookSearchResultItem extends Component {
   constructor(props) {
@@ -30,13 +32,13 @@ class AddBookSearchResultItem extends Component {
 
   render() {
     return (
-      <div>
-        <h5>{this.state.bookTitle}</h5>
+      <div className='search-item'>
         <img
+            className='search-item'
             src={this.state.bookImage}
             alt={'Picture of ' + this.state.bookTitle}
         />
-        <button onClick={this.handleAddButtonClick}>Add</button>
+        <Button bsStyle='primary' onClick={this.handleAddButtonClick}>Add</Button>
       </div>
     );
   }
