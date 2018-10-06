@@ -38,7 +38,10 @@ class AddBookSearchResultItem extends Component {
             src={this.state.bookImage}
             alt={'Picture of ' + this.state.bookTitle}
         />
-        <Button bsStyle='primary' onClick={this.handleAddButtonClick}>Add</Button>
+        <Button
+            bsStyle='primary'
+            onClick={this.handleAddButtonClick}
+        >Add</Button>
       </div>
     );
   }
