@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {addBookModalIsOpen, getUserBookArray} from '../redux/actions/index';
 import AddBookModal from './AddBookModal';
 import BookList from './BookList';
+import {Button} from 'react-bootstrap';
 
 class MyBooks extends Component {
   constructor(props) {
@@ -22,7 +23,10 @@ class MyBooks extends Component {
     return (
       <div>
         <h3>My Books Screen</h3>
-        <button onClick={this.handleAddBookClick}>Add a Book</button>
+        <Button
+            bsStyle="primary"
+            onClick={this.handleAddBookClick}
+        >Add a Book</Button>
         <AddBookModal/>
         <BookList bookArray={this.props.bookArray} parentComponent={'MyBooks'}/>
       </div>
