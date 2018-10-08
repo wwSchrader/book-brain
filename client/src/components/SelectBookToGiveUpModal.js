@@ -43,47 +43,48 @@ class SelectBookToGiveUpModal extends Component {
     }
   }
 
-  render() {
+  displayModalBody() {
     if (this.props.bookArray.length === 0) {
       return (
-        <Modal show onHide={this.hideModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Choose Book To Give Up</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h2>You need to add a book to your collection first.</h2>
-            <h3>Go to My Books to add a book.</h3>
-          </Modal.Body>
-        </Modal>
+        <Modal.Body>
+          <h2>You need to add a book to your collection first.</h2>
+          <h3>Go to My Books to add a book.</h3>
+        </Modal.Body>
       );
     } else {
       return (
-        <Modal show onHide={this.hideModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Choose Book To Give Up</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {this.props.bookArray.map((book) => {
-              return (
-                <div key={book._id}>
-                  <h3>{book.bookTitle}</h3>
-                  <img
-                      src={book.bookThumbnailUrl}
-                      alt={'Book cover of ' + book.bookTitle}
-                  />
-                  <Button
-                      onClick={() => this.handleSelectButton(book._id)}
-                      disabled={this.toDisableButton(book._id)}
-                  >
-                    Select
-                  </Button>
-                </div>
-              );
-            })}
-          </Modal.Body>
-        </Modal>
+        <Modal.Body>
+          {this.props.bookArray.map((book) => {
+            return (
+              <div key={book._id}>
+                <h3>{book.bookTitle}</h3>
+                <img
+                    src={book.bookThumbnailUrl}
+                    alt={'Book cover of ' + book.bookTitle}
+                />
+                <Button
+                    onClick={() => this.handleSelectButton(book._id)}
+                    disabled={this.toDisableButton(book._id)}
+                >
+                  Select
+                </Button>
+              </div>
+            );
+          })}
+        </Modal.Body>
       );
     }
+  }
+
+  render() {
+    return (
+      <Modal show onHide={this.hideModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Choose Book To Give Up</Modal.Title>
+        </Modal.Header>
+        {this.displayModalBody()}
+      </Modal>
+    );
   }
 }
 
