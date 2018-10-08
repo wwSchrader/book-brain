@@ -8,6 +8,7 @@ import {
   setBookIdWanted,
 } from '../redux/actions/index';
 import {withRouter} from 'react-router-dom';
+import './SelectBookToGiveUpModal.css';
 
 class SelectBookToGiveUpModal extends Component {
   constructor(props) {
@@ -53,16 +54,17 @@ class SelectBookToGiveUpModal extends Component {
       );
     } else {
       return (
-        <Modal.Body>
+        <Modal.Body className='add-book-container'>
           {this.props.bookArray.map((book) => {
             return (
-              <div key={book._id}>
-                <h3>{book.bookTitle}</h3>
+              <div key={book._id} className='add-book-item'>
                 <img
+                    className='thumbnail'
                     src={book.bookThumbnailUrl}
                     alt={'Book cover of ' + book.bookTitle}
                 />
                 <Button
+                    bsStyle='primary'
                     onClick={() => this.handleSelectButton(book._id)}
                     disabled={this.toDisableButton(book._id)}
                 >

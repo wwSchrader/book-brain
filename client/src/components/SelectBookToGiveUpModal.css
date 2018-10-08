@@ -1,0 +1,15 @@
+.add-book-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.add-book-item {
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+}
+
+.thumbnail {
+  box-shadow: 10px 10px 5px grey;
+}
