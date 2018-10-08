@@ -132,13 +132,18 @@ export function logoutUserApiCall() {
   return (dispatch) => {
     fetch('api/users/logout', {
       method: 'GET',
-      credentials: 'include'
+      credentials: 'include',
     })
     .then((resp) => resp.json())
     .then((res) => {
       if (!res.isLoggedIn) {
         dispatch(isLoggedIn(false));
         dispatch(setUserInfo(null));
+        dispatch(bookSearchArray([]));
+        dispatch(userBookArray([]));
+        dispatch(setBookIdWanted(null));
+        dispatch(setRequestedTradeList([]));
+        dispatch(setPendingTradeList([]));
       }
     })
    .catch((err) => {
