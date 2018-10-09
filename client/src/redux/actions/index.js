@@ -130,7 +130,7 @@ export function loginUserApiCall(user) {
 
 export function logoutUserApiCall() {
   return (dispatch) => {
-    fetch('api/users/logout', {
+    return fetch('api/users/logout', {
       method: 'GET',
       credentials: 'include',
     })
@@ -144,10 +144,14 @@ export function logoutUserApiCall() {
         dispatch(setBookIdWanted(null));
         dispatch(setRequestedTradeList([]));
         dispatch(setPendingTradeList([]));
+        return true;
+      } else {
+        return false;
       }
     })
    .catch((err) => {
       console.log('Error with logging out: ' + err);
+      return false;
     });
   };
 }

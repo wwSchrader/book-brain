@@ -3,6 +3,7 @@ import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {loginModalIsOpen, logoutUserApiCall} from '../redux/actions/index';
 import {LinkContainer, IndexLinkContainer} from 'react-router-bootstrap';
+import {withRouter} from 'react-router-dom';
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -11,16 +12,28 @@ class NavigationBar extends Component {
     this.onShowLoginModal = this.onShowLoginModal.bind(this);
     this.showLoginOrLogout = this.showLoginOrLogout.bind(this);
     this.showUserNavigationButtons = this.showUserNavigationButtons.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
   }
 
   onShowLoginModal() {
     this.props.loginModalIsOpen(true);
   }
 
+  logoutUser() {
+    this.props.logoutUserApiCall()
+    .then((resp) => {
+      if (resp) {
+        this.props.history.push('/');
+      } else {
+        console.log('Logout Failed');
+      }
+    });
+  }
+
   showLoginOrLogout() {
     if (this.props.isLoggedIn) {
       return (
-        <NavItem onClick={this.props.logoutUserApiCall}>
+        <NavItem onClick={this.logoutUser}>
           Logout
         </NavItem>
       );
@@ -79,13 +92,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loginModalIsOpen: (bool) => dispatch(loginModalIsOpen(bool)),
-    logoutUserApiCall: (bool) => dispatch(logoutUserApiCall(bool)),
+    logoutUserApiCall: () => dispatch(logoutUserApiCall()),
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
   {pure: false},
-  )(NavigationBar);
+  )(NavigationBar));
