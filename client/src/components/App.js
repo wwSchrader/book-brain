@@ -35,7 +35,7 @@ class App extends Component {
     // Initialize FB SDK for Login Button
     window.fbAsyncInit = function() {
       window.FB.init({
-        appId: '525631557907551',
+        appId: process.env.REACT_APP_FACEBOOK_APP_ID,
         cookie: true,
         xfbml: true,
         version: 'v3.1',
