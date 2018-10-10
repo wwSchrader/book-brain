@@ -5,6 +5,7 @@ const googleBookApi = 'https://www.googleapis.com/books/v1/volumes?q=';
 const BookSearch = require('../models/bookSearch');
 const {ensureAuthenticated} = require('../library');
 const Book =require('../models/books');
+const Trade = require('../models/trades');
 
 // GET book from google book api
 router.get('/getbook/:bookTitle',
@@ -102,7 +103,13 @@ router.delete('/deletebook', ensureAuthenticated, function(req, res, next) {
       res.json({bookDeleted: false}).sendStatus(500);
     } else {
       book.remove().then(function() {
-        res.json({bookDeleted: true});
+        Trade.deleteMany(
+          {$or: [{solicitorBookId: req.body.bookId},
+          {bookToTradeId: req.body.bookId}]},
+          function(err) {
+            res.json({bookDeleted: true});
+          }
+        );
       });
     }
   })
