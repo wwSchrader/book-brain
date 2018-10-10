@@ -1,0 +1,14 @@
+.spinning {
+  margin: 0 auto;
+  border-color: red;
+}
+
+.test-text {
+  color: red;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

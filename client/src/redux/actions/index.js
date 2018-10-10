@@ -243,7 +243,7 @@ export function allUsersBookArray(bookArray) {
 
 export function getAllUserBookArray() {
   return (dispatch) => {
-    fetch('api/books/getallbooks', {method: 'GET'})
+    return fetch('api/books/getallbooks', {method: 'GET'})
     .then((resp) => resp.json())
     .then((res) => {
       dispatch(allUsersBookArray(res.returnedBooks));

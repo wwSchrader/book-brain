@@ -20,10 +20,17 @@ import {
   faBan,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
+import Loading from './Loading';
 
 library.add(faExchangeAlt, faCheckCircle, faBan, faClock);
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {showSpinner: true};
+  }
+
   componentDidMount() {
     // Initialize FB SDK for Login Button
     window.fbAsyncInit = function() {
@@ -55,6 +62,8 @@ class App extends Component {
       } else {
         this.props.getTrades();
       }
+
+      this.setState({showSpinner: false});
     });
   }
 
@@ -64,6 +73,7 @@ class App extends Component {
         <NavigationBar/>
         <RegisteredUserAlert/>
         <LoginModal/>
+        <Loading loading={this.state.showSpinner} />
         <Route exact path='/' component={Home} />
         <Route path='/mybooks' component={MyBooks} />
         <Route path='/trades' component={Trades} />
