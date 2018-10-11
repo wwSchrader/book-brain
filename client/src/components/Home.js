@@ -11,7 +11,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h3>Home Screen</h3>
+        <h3>Welcome to Book Brain!</h3>
         <BookList bookArray={this.props.bookArray} parentComponent={'Home'} />
       </div>
     );
